@@ -298,6 +298,16 @@
       font-size: clamp(22px, 3.2vw, 34px);
       font-weight: 700; color: #fff; line-height: 1.5;
     }
+    .quote-warning {
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-bottom: 2rem;
+      padding: 6px 16px;
+      border: 1px solid rgba(255,180,0,0.35);
+      background: rgba(255,180,0,0.04);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px; letter-spacing: 2px;
+      color: rgba(255,180,0,0.7);
+    }
     .hl { color: var(--green); }
     .hl2 { color: var(--purple); }
 
@@ -310,7 +320,7 @@
     }
     .foot-mono {
       font-family: 'Share Tech Mono', monospace;
-      font-size: 11px; color: rgba(224,232,255,0.13);
+      font-size: 11px; color: rgba(224,232,255,0.55);
       letter-spacing: 2px;
     }
     .foot-mono em { color: var(--green); font-style: normal; }
@@ -352,7 +362,7 @@
   <div class="hero">
     <div class="glow1"></div>
     <div class="glow2"></div>
-    <div class="hero-logo"><video src="logo.mp4" autoplay loop muted playsinline></video></div>
+    <div class="hero-logo"><video src="logo2.mp4" autoplay loop muted playsinline></video></div>
     <div class="hero-tag" data-i18n="tag">// RECHERCHES PERSONNELLES — TESTS LIVE — TELEGRAM</div>
     <div class="hero-name">
       <span class="name-solid">SID</span>
@@ -421,6 +431,7 @@
   <div class="quote-section">
     <div class="quote-glow"></div>
     <div class="quote-inner">
+      <div class="quote-warning">⚠ NOT FINANCIAL ADVICE</div>
       <span class="quote-mark">"</span>
       <div class="quote-text" data-i18n="quote">
         Je ne vais pas te faire <span class="hl">gagner de l'argent</span><br/>
