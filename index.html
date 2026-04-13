@@ -347,6 +347,19 @@
       .univers-grid { grid-template-columns: 1fr; }
       .univers-item { border-right: none; border-bottom: 1px solid var(--border); }
     }
+
+    /* ANIMATIONS */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .name-solid.scrambling,
+    .name-outline.scrambling { opacity: 0.8; }
   </style>
 </head>
 <body>
@@ -537,6 +550,48 @@
     document.documentElement.lang = lang;
     document.documentElement.setAttribute("lang", lang);
   }
+
+  // ── ANIMATIONS ───────────────────────────────────────────────
+
+  // Fade up au scroll sur les sections
+  var fadeEls = document.querySelectorAll('.univers, .bio-section, .tg-section, .quote-section, footer');
+  fadeEls.forEach(function(el) { el.classList.add('reveal'); });
+  var fadeObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.1 });
+  fadeEls.forEach(function(el) { fadeObs.observe(el); });
+
+  // Scramble sur SID / SERVICES uniquement (jamais traduits)
+  var GLYPHS = '!@#$%&[]|<>?01░▒▓╬■▪';
+  function scramble(el) {
+    var original = el.textContent;
+    var times = original.split('').map(function(ch) {
+      return ch.trim() ? Math.random() : -1;
+    });
+    var start = performance.now();
+    var ms = 1200;
+    el.classList.add('scrambling');
+    (function tick(now) {
+      var p = Math.min((now - start) / ms, 1);
+      el.textContent = original.split('').map(function(ch, i) {
+        if (times[i] < 0) return ch;
+        return times[i] < p ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      }).join('');
+      if (p < 1) requestAnimationFrame(tick);
+      else { el.textContent = original; el.classList.remove('scrambling'); }
+    })(start);
+  }
+
+  var nameEls = document.querySelectorAll('.name-solid, .name-outline');
+  var nameObs = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) { scramble(e.target); nameObs.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  nameEls.forEach(function(el) { nameObs.observe(el); });
+
 </script>
 </body>
 </html>
