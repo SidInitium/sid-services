@@ -347,6 +347,10 @@
       .univers-grid { grid-template-columns: 1fr; }
       .univers-item { border-right: none; border-bottom: 1px solid var(--border); }
     }
+
+    /* SCRAMBLE EFFECT */
+    .scrambling { color: var(--green) !important; opacity: 0.75; }
+    .name-outline.scrambling { -webkit-text-stroke-color: var(--green); color: transparent !important; }
   </style>
 </head>
 <body>
@@ -537,6 +541,77 @@
     document.documentElement.lang = lang;
     document.documentElement.setAttribute("lang", lang);
   }
+
+  // ── SCRAMBLE EFFECT ──────────────────────────────────────────
+  const GLYPHS = '!@#$%&[]{}|<>?/\~01アイウエオ░▒▓╬╫╪■□▪';
+
+  function scramble(el, duration) {
+    duration = duration || 1100;
+    const nodes = [];
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
+    let n;
+    while ((n = walker.nextNode())) {
+      const txt = n.textContent;
+      if (txt.trim().length === 0) continue;
+      const times = Array.from(txt).map(ch =>
+        (ch === ' ' || ch === '
+' || ch === '	') ? -1 : Math.random()
+      );
+      nodes.push({ node: n, original: txt, times });
+    }
+    if (!nodes.length) return;
+
+    el.classList.add('scrambling');
+    const start = performance.now();
+
+    (function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      nodes.forEach(function(item) {
+        let out = '';
+        for (let i = 0; i < item.original.length; i++) {
+          const ch = item.original[i];
+          if (item.times[i] < 0) { out += ch; continue; }
+          out += item.times[i] < p
+            ? ch
+            : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+        }
+        item.node.textContent = out;
+      });
+      if (p < 1) { requestAnimationFrame(tick); }
+      else { el.classList.remove('scrambling'); }
+    })(start);
+  }
+
+  const SCRAMBLE_TARGETS = [
+    '.hero-tag', '.name-solid', '.name-outline',
+    '.hero-intent', '.hero-sub',
+    '.sec-label', '.univers-name',
+    '.bio-left-label', '.bio-left-title',
+    '.tg-left-label', '.tg-left-title',
+    '.quote-text'
+  ].join(',');
+
+  const observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        scramble(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.25 });
+
+  document.querySelectorAll(SCRAMBLE_TARGETS).forEach(function(el) {
+    observer.observe(el);
+  });
+
+  // Re-scramble aussi au changement de langue
+  const _origSetLang = setLang;
+  setLang = function(lang) {
+    _origSetLang(lang);
+    document.querySelectorAll(SCRAMBLE_TARGETS).forEach(function(el) {
+      scramble(el, 900);
+    });
+  };
 </script>
 </body>
 </html>
