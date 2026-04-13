@@ -349,12 +349,13 @@
     }
 
     /* ANIMATIONS */
-    .reveal {
+    .univers, .bio-section, .tg-section, .quote-section, footer {
       opacity: 0;
       transform: translateY(24px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
-    .reveal.visible {
+    .univers.visible, .bio-section.visible, .tg-section.visible,
+    .quote-section.visible, footer.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -555,7 +556,6 @@
 
   // Fade up au scroll sur les sections
   var fadeEls = document.querySelectorAll('.univers, .bio-section, .tg-section, .quote-section, footer');
-  fadeEls.forEach(function(el) { el.classList.add('reveal'); });
   var fadeObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
