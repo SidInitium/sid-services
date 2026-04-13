@@ -528,7 +528,7 @@
     const t = i18n[lang];
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
-      if (t[key] !== undefined) { el.innerHTML = t[key]; scramble(el, 800); }
+      if (t[key] !== undefined) el.innerHTML = t[key];
     });
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.lang === lang);
@@ -537,54 +537,6 @@
     document.documentElement.lang = lang;
     document.documentElement.setAttribute("lang", lang);
   }
-
-
-  // ── SCRAMBLE ─────────────────────────────────────────────────
-  const GLYPHS = '!@#$%&[]{}|<>/?01アイウエオ░▒▓╬■□▪';
-  const SCRAMBLE_SEL = '.hero-tag,.name-solid,.name-outline,.hero-intent,.hero-sub,.sec-label,.univers-name,.bio-left-label,.bio-left-title,.tg-left-label,.tg-left-title,.quote-text';
-
-  function scramble(el, ms) {
-    ms = ms || 1100;
-    var nodes = [];
-    var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null);
-    var n;
-    while ((n = walker.nextNode())) {
-      var txt = n.textContent;
-      if (!txt.trim()) continue;
-      nodes.push({
-        node: n,
-        original: txt,
-        times: txt.split('').map(function(ch) {
-          return (ch === ' ' || ch === '
-' || ch === '	') ? -1 : Math.random();
-        })
-      });
-    }
-    if (!nodes.length) return;
-    var start = performance.now();
-    (function tick(now) {
-      var p = Math.min((now - start) / ms, 1);
-      nodes.forEach(function(item) {
-        var out = '';
-        for (var i = 0; i < item.original.length; i++) {
-          var ch = item.original[i];
-          if (item.times[i] < 0) { out += ch; continue; }
-          out += item.times[i] < p ? ch : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-        }
-        item.node.textContent = out;
-      });
-      if (p < 1) requestAnimationFrame(tick);
-    })(start);
-  }
-
-  // Observer scroll
-  var obs = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) {
-      if (e.isIntersecting) { scramble(e.target); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.2 });
-  document.querySelectorAll(SCRAMBLE_SEL).forEach(function(el) { obs.observe(el); });
-
 </script>
 </body>
 </html>
