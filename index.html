@@ -368,6 +368,19 @@
     }
     .name-solid.scrambling,
     .name-outline.scrambling { opacity: 0.8; }
+
+    /* HERO ENTRANCE */
+    @keyframes heroFadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .hero-tag        { animation: heroFadeUp 0.5s ease both 0.05s; }
+    .name-solid      { animation: heroFadeUp 0.5s ease both 0.18s; }
+    .name-outline    { animation: heroFadeUp 0.5s ease both 0.30s; }
+    .hero-intent     { animation: heroFadeUp 0.5s ease both 0.46s; }
+    .hero-sub        { animation: heroFadeUp 0.5s ease both 0.60s; }
+    .cta-btn         { animation: heroFadeUp 0.5s ease both 0.74s; }
+
   </style>
 </head>
 <body>
@@ -456,7 +469,7 @@
       <div class="quote-warning">⚠ NOT FINANCIAL ADVICE</div>
       <span class="quote-mark">"</span>
       <div class="quote-text" data-i18n="quote">
-        Je ne vais pas te faire <span class="hl">gagner de l'argent</span><br/>
+        Je ne vais <span class="hl">pas te faire</span> gagner de l'argent<br/>
         mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>
         certains en gagnent.
       </div>
@@ -492,7 +505,7 @@
       bio: "Je suis développeur autodidacte, je construis des bots Telegram et je travaille sur la blockchain depuis un moment. Mon esthétique est clairement orientée underground et cyberpunk. J'ai monté de zéro un framework modulaire en Python/aiogram pour déployer des bots sur mesure, avec NFT gates, paiements multi-chain, modération avancée et captcha. Côté Web3, je navigue sur toutes les blockchains, j'écris des smart contracts, je monte des collections SBT/TBA, et je fais tourner des bots OSINT liés via API. Le trading fait aussi partie du tableau: mes propres stratégies de scalping, mes indicateurs, mes scripts pour suivre les marchés. Je gère mes VPS, mes clés, mes stacks, tout seul. J'avance vite parce que c'est ma façon de fonctionner.",
       disclaimer: "Contenu éducatif uniquement. Pas de conseil financier. DYOR.",
       privacy: "Aucune donnée collectée. Pas de cookies. Conformité totale aux CGU Telegram.",
-      quote: 'Je ne vais pas te faire <span class="hl">gagner de l\'argent</span><br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.'
+      quote: 'Je ne vais <span class="hl">pas te faire</span> gagner de l'argent<br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.'
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -510,7 +523,7 @@
       u4d: "Python, APIs, VPS, scripts. None of it came from a course. All of it came from curiosity, failure, and testing in real conditions.",
       biotitle: 'Who<span>I am.</span>',
       bio: "I'm a self-taught developer. I build Telegram bots and work with blockchain. Built from scratch a full modular Python/aiogram framework for custom bots with NFT gating, multi-chain payments, advanced moderation and captcha. On the Web3 side, I navigate all major blockchains, write smart contracts, deploy SBT/TBA collections, and run API-connected OSINT bots. Trading is part of the picture too: my own scalping strategies, indicators, and market-tracking scripts. I manage my own VPS, keys and stacks, solo. I move fast because that's just how I work.",
-      quote: 'I\'m not going to make you <span class="hl">earn money</span><br/>but make you understand <span class="hl">why and how</span><br/>some people do.',
+      quote: 'I'm <span class="hl">not going to</span> make you earn money<br/>but make you understand <span class="hl">why and how</span><br/>some people do.',
       disclaimer: "Educational content only. Not financial advice. DYOR.",
       privacy: "No data collected. No cookies. Full compliance with Telegram's ToS.",
       tgtitle: "// TELEGRAM",
@@ -535,7 +548,7 @@
       bio: "Я самоучка. Пишу Telegram-боты и работаю с блокчейном. С нуля собрал модульный фреймворк на Python/aiogram для кастомных ботов с NFT-гейтингом, мультичейн-оплатой, модерацией и капчей. В Web3 ориентируюсь на всех блокчейнах, пишу смарт-контракты, деплою SBT/TBA коллекции, гоняю OSINT-боты через API. Трейдинг тоже в картине: мои стратегии скальпинга, мои индикаторы, мои скрипты мониторинга рынка. Всё сам: VPS, ключи, стеки. Двигаюсь быстро — иначе не умею.",
       disclaimer: "Только образовательный контент. Не является финансовым советом. DYOR.",
       privacy: "Данные не собираются. Куки отсутствуют. Полное соответствие правилам Telegram.",
-      quote: 'Я не собираюсь помочь тебе <span class="hl">заработать деньги</span><br/>но помогу понять <span class="hl">почему и как</span><br/>некоторые это делают.',
+      quote: 'Я <span class="hl">не собираюсь</span> помочь тебе заработать деньги<br/>но помогу понять <span class="hl">почему и как</span><br/>некоторые это делают.',
       tgtitle: "// TELEGRAM",
       tgonly: "только.",
       tgsection: "Я на связи только в Telegram. Не из упрямства, а потому что это единственная платформа, которой я доверяю. Все остальные соцсети тебя продают, следят за тобой и решают что тебе можно говорить. Telegram даёт свободу действовать, общаться без цензуры и строить то, что хочу, ни у кого не спрашивая разрешения."
