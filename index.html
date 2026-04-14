@@ -346,10 +346,6 @@
     @media (max-width: 480px) {
       .univers-grid { grid-template-columns: 1fr; }
       .univers-item { border-right: none; border-bottom: 1px solid var(--border); }
-      .hero-logo video { width: 80px; height: 80px; }
-      .cta-btn { clip-path: none; width: 100%; justify-content: center; }
-      .lang-bar { top: auto; bottom: 0; padding: 0.6rem 1rem; background: rgba(5,8,16,0.95); width: 100%; justify-content: center; border-top: 1px solid var(--border); }
-      .hero { padding-bottom: 5rem; }
     }
 
     /* ANIMATIONS */
@@ -372,19 +368,6 @@
     }
     .name-solid.scrambling,
     .name-outline.scrambling { opacity: 0.8; }
-
-    /* HERO ENTRANCE */
-    @keyframes heroFadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hero-tag        { animation: heroFadeUp 0.5s ease both 0.05s; }
-    .name-solid      { animation: heroFadeUp 0.5s ease both 0.18s; }
-    .name-outline    { animation: heroFadeUp 0.5s ease both 0.30s; }
-    .hero-intent     { animation: heroFadeUp 0.5s ease both 0.46s; }
-    .hero-sub        { animation: heroFadeUp 0.5s ease both 0.60s; }
-    .cta-btn         { animation: heroFadeUp 0.5s ease both 0.74s; }
-
   </style>
 </head>
 <body>
@@ -470,10 +453,10 @@
   <div class="quote-section">
     <div class="quote-glow"></div>
     <div class="quote-inner">
-      <div class="quote-warning" data-i18n="nfa">⚠ NOT FINANCIAL ADVICE</div>
+      <div class="quote-warning">⚠ NOT FINANCIAL ADVICE</div>
       <span class="quote-mark">"</span>
       <div class="quote-text" data-i18n="quote">
-        Je ne vais <span class="hl">pas te faire</span> gagner de l'argent<br/>
+        Je ne vais pas te faire <span class="hl">gagner de l'argent</span><br/>
         mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>
         certains en gagnent.
       </div>
@@ -495,7 +478,7 @@
       tag: "// RECHERCHES PERSONNELLES — TESTS LIVE — TELEGRAM",
       intent: 'Ces univers sont complexes. Je les explore depuis longtemps et je partage ce que j\'ai <span class="hl">compris en les vivant</span>.',
       sub: "Crypto · Blockchain · Telegram · Trading · Web3<br/>Pas de promesses. Juste ce que j'ai testé, cassé et reconstruit.",
-      cta: "Rejoindre le canal",
+      cta: '<a class="cta-btn" href="https://t.me/Sid_Services" target="_blank" rel="noopener noreferrer"><span class="dot-live"></span>Rejoindre le canal <span class="arrow">→</span></a>',
       sec1: "// LES UNIVERS",
       u1t: "Crypto & Trading",
       u1d: "CeFi et DeFi, CEX et DEX, spot et futures. Les marchés ne se comprennent pas avec des vidéos YouTube. Ils se comprennent en étant dedans.",
@@ -509,11 +492,7 @@
       bio: "Je suis développeur autodidacte, je construis des bots Telegram et je travaille sur la blockchain depuis un moment. Mon esthétique est clairement orientée underground et cyberpunk. J'ai monté de zéro un framework modulaire en Python/aiogram pour déployer des bots sur mesure, avec NFT gates, paiements multi-chain, modération avancée et captcha. Côté Web3, je navigue sur toutes les blockchains, j'écris des smart contracts, je monte des collections SBT/TBA, et je fais tourner des bots OSINT liés via API. Le trading fait aussi partie du tableau: mes propres stratégies de scalping, mes indicateurs, mes scripts pour suivre les marchés. Je gère mes VPS, mes clés, mes stacks, tout seul. J'avance vite parce que c'est ma façon de fonctionner.",
       disclaimer: "Contenu éducatif uniquement. Pas de conseil financier. DYOR.",
       privacy: "Aucune donnée collectée. Pas de cookies. Conformité totale aux CGU Telegram.",
-      nfa: "⚠ CONTENU NON FINANCIER",
-      tgtitle: "// TELEGRAM",
-      tgonly: "only.",
-      tgsection: "Je suis joignable uniquement sur Telegram. Pas par snobisme, mais parce que c'est le seul endroit où je fais confiance à l'infrastructure. Les autres réseaux sociaux te vendent, t'analysent et te censurent. Telegram me laisse opérer librement, communiquer sans filtre et construire ce que je veux sans demander la permission à personne.",
-      quote: 'Je ne vais <span class="hl">pas te faire</span> gagner de l'argent<br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.'
+      quote: 'Je ne vais pas te faire <span class="hl">gagner de l\'argent</span><br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.'
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -531,10 +510,9 @@
       u4d: "Python, APIs, VPS, scripts. None of it came from a course. All of it came from curiosity, failure, and testing in real conditions.",
       biotitle: 'Who<span>I am.</span>',
       bio: "I'm a self-taught developer. I build Telegram bots and work with blockchain. Built from scratch a full modular Python/aiogram framework for custom bots with NFT gating, multi-chain payments, advanced moderation and captcha. On the Web3 side, I navigate all major blockchains, write smart contracts, deploy SBT/TBA collections, and run API-connected OSINT bots. Trading is part of the picture too: my own scalping strategies, indicators, and market-tracking scripts. I manage my own VPS, keys and stacks, solo. I move fast because that's just how I work.",
-      quote: 'I'm <span class="hl">not going to</span> make you earn money<br/>but make you understand <span class="hl">why and how</span><br/>some people do.',
+      quote: 'I\'m not going to make you <span class="hl">earn money</span><br/>but make you understand <span class="hl">why and how</span><br/>some people do.',
       disclaimer: "Educational content only. Not financial advice. DYOR.",
       privacy: "No data collected. No cookies. Full compliance with Telegram's ToS.",
-      nfa: "⚠ NOT FINANCIAL ADVICE",
       tgtitle: "// TELEGRAM",
       tgonly: "only.",
       tgsection: "I'm only reachable on Telegram. Not out of stubbornness, but because it's the only platform I actually trust. Every other social network is selling you, tracking you, or quietly deciding what you're allowed to say. Telegram lets me operate freely, communicate without a filter, and build what I want without asking anyone for permission."
@@ -557,8 +535,7 @@
       bio: "Я самоучка. Пишу Telegram-боты и работаю с блокчейном. С нуля собрал модульный фреймворк на Python/aiogram для кастомных ботов с NFT-гейтингом, мультичейн-оплатой, модерацией и капчей. В Web3 ориентируюсь на всех блокчейнах, пишу смарт-контракты, деплою SBT/TBA коллекции, гоняю OSINT-боты через API. Трейдинг тоже в картине: мои стратегии скальпинга, мои индикаторы, мои скрипты мониторинга рынка. Всё сам: VPS, ключи, стеки. Двигаюсь быстро — иначе не умею.",
       disclaimer: "Только образовательный контент. Не является финансовым советом. DYOR.",
       privacy: "Данные не собираются. Куки отсутствуют. Полное соответствие правилам Telegram.",
-      quote: 'Я <span class="hl">не собираюсь</span> помочь тебе заработать деньги<br/>но помогу понять <span class="hl">почему и как</span><br/>некоторые это делают.',
-      nfa: "⚠ Не является финансовым советом",
+      quote: 'Я не собираюсь помочь тебе <span class="hl">заработать деньги</span><br/>но помогу понять <span class="hl">почему и как</span><br/>некоторые это делают.',
       tgtitle: "// TELEGRAM",
       tgonly: "только.",
       tgsection: "Я на связи только в Telegram. Не из упрямства, а потому что это единственная платформа, которой я доверяю. Все остальные соцсети тебя продают, следят за тобой и решают что тебе можно говорить. Telegram даёт свободу действовать, общаться без цензуры и строить то, что хочу, ни у кого не спрашивая разрешения."
