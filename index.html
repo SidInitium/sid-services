@@ -382,7 +382,10 @@
       <button class="lang-btn" data-lang="en" onclick="setLang('en')">🇬🇧 EN</button>
       <button class="lang-btn" data-lang="ru" onclick="setLang('ru')">🇷🇺 RU</button>
     </div>
-    <button id="music-toggle" aria-label="Toggle music" title="Toggle music">♪</button>
+    <div id="music-wrap">
+      <span id="music-label">MUSIC</span>
+      <button id="music-toggle" aria-label="Toggle music" title="Toggle music">♪</button>
+    </div>
   </div>
 
   <!-- HERO -->
@@ -614,13 +617,26 @@
 <!-- ░░ MUSIC PLAYER ░░ -->
 <audio id="bg-music" src="bjorns-anvil.mp3" loop preload="none"></audio>
 <style>
+  #music-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: flex-end;
+  }
+  #music-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: rgba(0, 255, 180, 0.45);
+    letter-spacing: 0.1em;
+    user-select: none;
+  }
   #music-toggle {
     background: rgba(5, 8, 16, 0.75);
     border: 1px solid rgba(0, 255, 180, 0.25);
     color: rgba(0, 255, 180, 0.55);
-    font-size: 14px;
-    width: 34px;
-    height: 22px;
+    font-size: 18px;
+    width: 44px;
+    height: 29px;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
