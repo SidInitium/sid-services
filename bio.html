@@ -68,6 +68,7 @@
     #music-toggle { background: rgba(5,8,16,0.75); border: 1px solid rgba(0,255,180,0.25); color: rgba(0,255,180,0.55); font-size: 18px; width: 44px; height: 29px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s; line-height: 1; }
     #music-toggle:hover { border-color: rgba(0,255,180,0.6); color: #00FFB4; box-shadow: 0 0 8px rgba(0,255,180,0.2); }
     #music-toggle.playing { border-color: rgba(0,255,180,0.5); color: #00FFB4; box-shadow: 0 0 10px rgba(0,255,180,0.15); }
+    .credit-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: rgba(224,232,255,0.25); letter-spacing: 1px; text-align: right; }
   </style>
 </head>
 <body>
@@ -86,6 +87,7 @@
       <span id="music-label">MUSIC</span>
       <button id="music-toggle" aria-label="Toggle music" title="Toggle music">♪</button>
     </div>
+    <span class="credit-tag" data-i18n="footer_credit">Conçu et développé par Sid</span>
   </div>
 
   <!-- UNIVERS -->
@@ -186,7 +188,8 @@
       sv3t: "Infrastructure Telegram", sv3d: '<div class="service-intro">Canal, groupe et bots configurés et opérationnels dès le premier jour.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 50€</span></div><div class="tier-desc">Maintenance 15€/mois.</div></div>',
       sv4t: "Bot Python sur mesure", sv4d: '<div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div>',
       nav_bio: "À PROPOS", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← RETOUR",
-      contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, rejoins le canal ou contacte directement."
+      contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, rejoins le canal ou contacte directement.",
+      footer_credit: "Conçu et développé par Sid"
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -211,7 +214,8 @@
       sv3t: "Telegram Infrastructure", sv3d: '<div class="service-intro">Channel, group and bots set up and ready to run from day one.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 50€</span></div><div class="tier-desc">Maintenance 15€/month.</div></div>',
       sv4t: "Custom Python Bot", sv4d: '<div class="service-intro">Built for your exact needs. Moderation, payments, NFT access, OSINT, scheduling.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 100€</span></div><div class="tier-desc">Maintenance 20€/month.</div></div>',
       nav_bio: "ABOUT", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← BACK",
-      contact_intro: "Available on Telegram only. For any question or service request, join the channel or reach out directly."
+      contact_intro: "Available on Telegram only. For any question or service request, join the channel or reach out directly.",
+      footer_credit: "Designed and built by Sid"
     },
     ru: {
       tag: "// ЛИЧНЫЕ ИССЛЕДОВАНИЯ — ЖИВЫЕ ТЕСТЫ — TELEGRAM",
@@ -236,7 +240,8 @@
       sv3t: "Инфраструктура Telegram", sv3d: '<div class="service-intro">Канал, группа и боты настроены и готовы к работе с первого дня.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 50€</span></div><div class="tier-desc">Обслуживание 15€/месяц.</div></div>',
       sv4t: "Кастомный Python бот", sv4d: '<div class="service-intro">Собран под твои точные потребности. Модерация, платежи, NFT доступ, OSINT, планирование.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 100€</span></div><div class="tier-desc">Обслуживание 20€/месяц.</div></div>',
       nav_bio: "ОБО МНЕ", nav_services: "СЕРВИСЫ", nav_contact: "КОНТАКТ", nav_back: "← НАЗАД",
-      contact_intro: "Доступен только в Telegram. По любому вопросу или запросу — присоединяйся к каналу или пиши напрямую."
+      contact_intro: "Доступен только в Telegram. По любому вопросу или запросу — присоединяйся к каналу или пиши напрямую.",
+      footer_credit: "Разработано Сидом"
     }
   };
 
