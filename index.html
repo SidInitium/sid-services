@@ -432,13 +432,23 @@
       .service-card { border-right: none; border-bottom: 1px solid var(--border); }
       .service-card:last-child { border-bottom: none; }
     }
-    .lang-hint {
-      margin-top: 1rem;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      letter-spacing: 1px;
+    .page-nav {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      margin-top: 3rem;
     }
+    .nav-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 0.75rem 2rem;
+      background: transparent;
+      border: 1px solid rgba(0,255,180,0.35);
+      color: var(--green);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px; letter-spacing: 2px; text-transform: uppercase;
+      text-decoration: none; transition: all 0.25s;
+      clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    }
+    .nav-btn:hover { background: var(--green); color: var(--bg); }
+    .nav-btn:hover .arrow { transform: translateX(4px); }
     .name-solid.scrambling,
     .name-outline.scrambling { opacity: 0.8; }
   </style>
@@ -475,91 +485,10 @@
       Crypto · Blockchain · Telegram · Trading · Web3<br/>
       Pas de promesses. Juste ce que j'ai testé, cassé et reconstruit.
     </div>
-    <a class="cta-btn" href="https://t.me/Sid_Services" target="_blank" rel="noopener noreferrer">
-      <svg class="tg-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
-      <span data-i18n="cta">Rejoindre le canal</span>
-      <span class="arrow">→</span>
-    </a>
-    <p class="lang-hint">🇬🇧 EN &amp; 🇷🇺 RU available — see top right</p>
-  </div>
-
-  <!-- UNIVERS -->
-  <div class="univers">
-    <div class="sec-label" data-i18n="sec1">// LES UNIVERS</div>
-    <div class="univers-grid">
-      <div class="univers-item">
-        <div class="univers-num">01</div>
-        <div class="univers-name" data-i18n="u1t">Crypto & Trading</div>
-        <div class="univers-desc" data-i18n="u1d">CeFi et DeFi, CEX et DEX, spot et futures. Les marchés ne se comprennent pas avec des vidéos YouTube. Ils se comprennent en étant dedans.</div>
-      </div>
-      <div class="univers-item">
-        <div class="univers-num">02</div>
-        <div class="univers-name" data-i18n="u2t">Blockchain & Web3</div>
-        <div class="univers-desc" data-i18n="u2d">NFT, smart contracts, tokens natifs, protocoles DeFi. Pas de la théorie. Des tests réels sur des vraies chaînes avec de vrais résultats.</div>
-      </div>
-      <div class="univers-item">
-        <div class="univers-num">03</div>
-        <div class="univers-name" data-i18n="u3t">Telegram & Bots</div>
-        <div class="univers-desc" data-i18n="u3d">L'API Telegram permet presque tout. Comprendre comment ça fonctionne, c'est comprendre une infrastructure entière qui tourne en coulisses.</div>
-      </div>
-      <div class="univers-item">
-        <div class="univers-num">04</div>
-        <div class="univers-name" data-i18n="u4t">Tech autodidacte</div>
-        <div class="univers-desc" data-i18n="u4d">Python, API, VPS, scripts. Rien n'est sorti d'une formation. Tout vient de la curiosité, de l'échec, et des tests en conditions réelles.</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- BIO -->
-  <div class="bio-section">
-    <div class="bio-left">
-      <div class="bio-left-label">// SID</div>
-      <div class="bio-left-title" data-i18n="biotitle">Qui<span>je suis.</span></div>
-    </div>
-    <p class="bio-text" data-i18n="bio">Développeur autodidacte, dans les bots Telegram et la blockchain depuis un moment. L'esthétique est clairement underground et cyberpunk. Parti de zéro pour monter un framework modulaire en Python/aiogram — bots sur mesure, NFT gates, paiements multi-chain, modération avancée et captcha. Côté Web3, toutes les blockchains sont couvertes : smart contracts, collections SBT/TBA, bots OSINT liés via API. Le trading est dans le tableau aussi : stratégies de scalping perso, indicateurs maison, scripts de suivi de marchés. VPS, clés, stacks — tout géré seul. Avancer vite, c'est juste la façon dont ça fonctionne.</p>
-  </div>
-
-  <!-- TELEGRAM -->
-  <div class="tg-section">
-    <div class="tg-left">
-      <div class="tg-left-label" data-i18n="tgtitle">// TELEGRAM</div>
-      <div class="tg-left-title">Telegram<span data-i18n="tgonly">only.</span></div>
-    </div>
-    <p class="tg-text" data-i18n="tgsection">Joignable uniquement sur Telegram. Pas par snobisme, mais parce que c'est le seul endroit où l'infrastructure inspire confiance. Les autres réseaux sociaux te vendent, t'analysent et te censurent. Telegram laisse opérer librement, communiquer sans filtre et construire ce qu'on veut sans demander la permission à personne.</p>
-  </div>
-
-  <!-- SERVICES -->
-  <div class="services-section">
-    <div class="sec-label" data-i18n="sec_sv">// SERVICES</div>
-    <div class="services-grid">
-      <div class="service-card">
-        <div class="service-title" data-i18n="sv1t">Icône Telegram</div>
-        <div class="service-body" data-i18n="sv1d"><div class="service-intro">Une icône créée pour toi, introuvable ailleurs. L'exclusivité est garantie.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Standard</span><span class="tier-price">100€</span></div><div class="tier-desc">Emoji custom à côté du pseudo. Impossible à copier.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Adaptatif</span><span class="tier-price">150€</span></div><div class="tier-desc">S'adapte au thème clair/sombre. Près du pseudo ou en fond de profil.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Double adaptatif</span><span class="tier-price">200€</span></div><div class="tier-desc">Fond de profil et emoji distinct en simultané. Identité visuelle complète.</div></div><div class="service-note">Livraison étape par étape. Aucun accès au compte requis.</div></div>
-      </div>
-      <div class="service-card">
-        <div class="service-title" data-i18n="sv2t">Username NFT Telegram</div>
-        <div class="service-body" data-i18n="sv2d"><div class="service-intro">Trois niveaux selon tes besoins.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Orientation</span><span class="tier-price">Gratuit</span></div><div class="tier-desc">Je t'oriente sur GetGems, tu achètes toi-même. Pourboire bienvenu.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Assisted Acquisition</span><span class="tier-price">30€ + prix du @</span></div><div class="tier-desc">Tu choisis, j'achète et t'accompagne jusqu'à l'activation.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Création sur Fragment</span><span class="tier-price">50€ + enchère</span></div><div class="tier-desc">Tu veux un @ précis qui n'existe pas encore. 7 jours d'attente. Résultat non garanti en cas de surenchère — honnêtement. Min. ~100 TON.</div></div></div>
-      </div>
-      <div class="service-card">
-        <div class="service-title" data-i18n="sv3t">Infrastructure Telegram</div>
-        <div class="service-body" data-i18n="sv3d"><div class="service-intro">Canal, groupe et bots configurés et opérationnels dès le premier jour.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 50€</span></div><div class="tier-desc">Maintenance 15€/mois.</div></div></div>
-      </div>
-      <div class="service-card">
-        <div class="service-title" data-i18n="sv4t">Bot Python sur mesure</div>
-        <div class="service-body" data-i18n="sv4d"><div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- QUOTE -->
-  <div class="quote-section">
-    <div class="quote-glow"></div>
-    <div class="quote-inner">
-      <div class="quote-warning">⚠ NOT FINANCIAL ADVICE</div>
-      <span class="quote-mark">"</span>
-      <div class="quote-text" data-i18n="quote">
-        <p>  Je ne vais   <span style="color: #00f5a0; font-weight: bold;">pas te faire</span>   gagner de l'argent</p><br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.
-      </div>
+    <div class="page-nav">
+      <a class="nav-btn" href="bio.html"><span data-i18n="nav_bio">À PROPOS</span> <span class="arrow">→</span></a>
+      <a class="nav-btn" href="services.html"><span data-i18n="nav_services">SERVICES</span> <span class="arrow">→</span></a>
+      <a class="nav-btn" href="contact.html"><span data-i18n="nav_contact">CONTACT</span> <span class="arrow">→</span></a>
     </div>
   </div>
 
@@ -604,7 +533,9 @@
       sv3t: "Infrastructure Telegram",
       sv3d: '<div class="service-intro">Canal, groupe et bots configurés et opérationnels dès le premier jour.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 50€</span></div><div class="tier-desc">Maintenance 15€/mois.</div></div>',
       sv4t: "Bot Python sur mesure",
-      sv4d: '<div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div>'
+      sv4d: '<div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div>',
+      nav_bio: "À PROPOS", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← RETOUR",
+      contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, rejoins le canal ou contacte directement."
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -636,7 +567,9 @@
       sv3t: "Telegram Infrastructure",
       sv3d: '<div class="service-intro">Channel, group and bots set up and ready to run from day one.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 50€</span></div><div class="tier-desc">Maintenance 15€/month.</div></div>',
       sv4t: "Custom Python Bot",
-      sv4d: '<div class="service-intro">Built for your exact needs. Moderation, payments, NFT access, OSINT, scheduling.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 100€</span></div><div class="tier-desc">Maintenance 20€/month.</div></div>'
+      sv4d: '<div class="service-intro">Built for your exact needs. Moderation, payments, NFT access, OSINT, scheduling.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 100€</span></div><div class="tier-desc">Maintenance 20€/month.</div></div>',
+      nav_bio: "ABOUT", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← BACK",
+      contact_intro: "Available on Telegram only. For any question or service request, join the channel or reach out directly."
     },
     ru: {
       tag: "// ЛИЧНЫЕ ИССЛЕДОВАНИЯ — ЖИВЫЕ ТЕСТЫ — TELEGRAM",
@@ -668,7 +601,9 @@
       sv3t: "Инфраструктура Telegram",
       sv3d: '<div class="service-intro">Канал, группа и боты настроены и готовы к работе с первого дня.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 50€</span></div><div class="tier-desc">Обслуживание 15€/месяц.</div></div>',
       sv4t: "Кастомный Python бот",
-      sv4d: '<div class="service-intro">Собран под твои точные потребности. Модерация, платежи, NFT доступ, OSINT, планирование.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 100€</span></div><div class="tier-desc">Обслуживание 20€/месяц.</div></div>'
+      sv4d: '<div class="service-intro">Собран под твои точные потребности. Модерация, платежи, NFT доступ, OSINT, планирование.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 100€</span></div><div class="tier-desc">Обслуживание 20€/месяц.</div></div>',
+      nav_bio: "ОБО МНЕ", nav_services: "СЕРВИСЫ", nav_contact: "КОНТАКТ", nav_back: "← НАЗАД",
+      contact_intro: "Доступен только в Telegram. По любому вопросу или запросу — присоединяйся к каналу или пиши напрямую."
     }
   };
 
@@ -687,7 +622,8 @@
     document.querySelectorAll('.lang-btn').forEach(btn => {
       btn.classList.toggle('active', btn.dataset.lang === lang);
     });
-    document.querySelector('.cta-btn').href = telegramLinks[lang];
+    const ctaBtn = document.querySelector('.cta-btn');
+    if (ctaBtn) ctaBtn.href = telegramLinks[lang];
     document.documentElement.lang = lang;
     document.documentElement.setAttribute("lang", lang);
   }
@@ -695,7 +631,7 @@
   // ── ANIMATIONS ───────────────────────────────────────────────
 
   // Fade up au scroll sur les sections
-  var fadeEls = document.querySelectorAll('.univers, .bio-section, .tg-section, .services-section, .quote-section, footer');
+  var fadeEls = document.querySelectorAll('footer');
   var fadeObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
