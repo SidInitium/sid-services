@@ -43,6 +43,12 @@
     @media (max-width: 768px) { .contact-section { padding: 5rem 1.5rem 3rem; } footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; } .lang-bar { padding: 0.8rem 1.2rem; } .back-btn { left: 1.2rem; } }
     .contact-section, footer { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .contact-section.visible, footer.visible { opacity: 1; transform: translateY(0); }
+    .quote-section { padding: 7rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: center; position: relative; overflow: hidden; }
+    .quote-glow { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 900px; height: 350px; background: radial-gradient(ellipse, rgba(123,97,255,0.06) 0%, transparent 70%); pointer-events: none; }
+    .quote-inner { max-width: 820px; text-align: center; position: relative; }
+    .quote-mark { font-family: 'Share Tech Mono', monospace; font-size: 80px; color: var(--purple); opacity: 0.2; line-height: 0.4; display: block; margin-bottom: 2rem; }
+    .quote-text { font-size: clamp(22px, 3.2vw, 34px); font-weight: 700; color: #fff; line-height: 1.5; }
+    .quote-warning { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 2rem; padding: 6px 16px; border: 1px solid rgba(255,180,0,0.35); background: rgba(255,180,0,0.04); font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(255,180,0,0.7); }
     #music-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
     #music-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(0,255,180,0.45); letter-spacing: 0.1em; user-select: none; }
     #music-toggle { background: rgba(5,8,16,0.75); border: 1px solid rgba(0,255,180,0.25); color: rgba(0,255,180,0.55); font-size: 18px; width: 44px; height: 29px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s; line-height: 1; }
@@ -84,6 +90,15 @@
     </a>
   </div>
 
+  <div class="quote-section">
+    <div class="quote-glow"></div>
+    <div class="quote-inner">
+      <div class="quote-warning">⚠ NOT FINANCIAL ADVICE</div>
+      <span class="quote-mark">"</span>
+      <div class="quote-text" data-i18n="main_quote">Je ne vais pas te faire gagner de l'argent mais te faire comprendre pourquoi et comment certains en gagnent.</div>
+    </div>
+  </div>
+
   <footer>
     <span class="foot-mono">SID<em>.</em>SERVICES</span>
     <span class="foot-mono"><em>@SID_SERVICES</em> — TELEGRAM</span>
@@ -121,7 +136,8 @@
       sv4t: "Bot Python sur mesure", sv4d: '<div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div>',
       nav_bio: "À PROPOS", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← RETOUR",
       contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, rejoins le canal ou contacte directement.",
-      footer_credit: "Conçu et développé par Sid"
+      footer_credit: "Conçu et développé par Sid",
+      main_quote: "Je ne vais pas te faire gagner de l'argent mais te faire comprendre pourquoi et comment certains en gagnent."
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -147,7 +163,8 @@
       sv4t: "Custom Python Bot", sv4d: '<div class="service-intro">Built for your exact needs. Moderation, payments, NFT access, OSINT, scheduling.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 100€</span></div><div class="tier-desc">Maintenance 20€/month.</div></div>',
       nav_bio: "ABOUT", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← BACK",
       contact_intro: "Available on Telegram only. For any question or service request, join the channel or reach out directly.",
-      footer_credit: "Designed and built by Sid"
+      footer_credit: "Designed and built by Sid",
+      main_quote: "I'm not going to make you earn money but make you understand why and how some people do."
     },
     ru: {
       tag: "// ЛИЧНЫЕ ИССЛЕДОВАНИЯ — ЖИВЫЕ ТЕСТЫ — TELEGRAM",
@@ -173,7 +190,8 @@
       sv4t: "Кастомный Python бот", sv4d: '<div class="service-intro">Собран под твои точные потребности. Модерация, платежи, NFT доступ, OSINT, планирование.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 100€</span></div><div class="tier-desc">Обслуживание 20€/месяц.</div></div>',
       nav_bio: "ОБО МНЕ", nav_services: "СЕРВИСЫ", nav_contact: "КОНТАКТ", nav_back: "← НАЗАД",
       contact_intro: "Доступен только в Telegram. По любому вопросу или запросу — присоединяйся к каналу или пиши напрямую.",
-      footer_credit: "Разработано Сидом"
+      footer_credit: "Разработано Сидом",
+      main_quote: "Я не собираюсь помочь тебе заработать деньги но помогу понять почему и как некоторые это делают."
     }
   };
 
@@ -205,10 +223,29 @@
     var btn = document.getElementById('music-toggle');
     var audio = document.getElementById('bg-music');
     var playing = false;
+
+    if (sessionStorage.getItem('music_playing') === 'true') {
+      var t = parseFloat(sessionStorage.getItem('music_time') || '0');
+      audio.play().then(function() {
+        audio.currentTime = t;
+        btn.textContent = '♫';
+        btn.classList.add('playing');
+        playing = true;
+      }).catch(function() {});
+    }
+
     btn.addEventListener('click', function() {
       if (!playing) { audio.play(); btn.textContent = '♫'; btn.classList.add('playing'); }
       else { audio.pause(); btn.textContent = '♪'; btn.classList.remove('playing'); }
       playing = !playing;
+    });
+
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest('a[href]');
+      if (link) {
+        sessionStorage.setItem('music_playing', playing ? 'true' : 'false');
+        sessionStorage.setItem('music_time', audio.currentTime);
+      }
     });
   })();
 </script>
