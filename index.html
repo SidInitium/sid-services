@@ -350,15 +350,87 @@
     }
 
     /* ANIMATIONS */
-    .univers, .bio-section, .tg-section, .quote-section, footer {
+    .univers, .bio-section, .tg-section, .services-section, .quote-section, footer {
       opacity: 0;
       transform: translateY(24px);
       transition: opacity 0.7s ease, transform 0.7s ease;
     }
     .univers.visible, .bio-section.visible, .tg-section.visible,
-    .quote-section.visible, footer.visible {
+    .services-section.visible, .quote-section.visible, footer.visible {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* SERVICES */
+    .services-section {
+      padding: 5rem 2.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      margin-top: 2.5rem;
+    }
+    .service-card {
+      padding: 2rem;
+      border-right: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .service-card:nth-child(2n) { border-right: none; }
+    .service-card:nth-last-child(-n+2) { border-bottom: none; }
+    .service-title {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--green);
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    .service-intro {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+    .service-tier {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .service-tier:last-of-type { border-bottom: none; }
+    .tier-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.25rem;
+    }
+    .tier-name {
+      font-family: 'Share Tech Mono', monospace;
+      color: rgba(224,232,255,0.8);
+      font-size: 0.76rem;
+    }
+    .tier-price {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--green);
+      font-size: 0.8rem;
+      white-space: nowrap;
+      margin-left: 1rem;
+    }
+    .tier-desc {
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .service-note {
+      font-size: 0.7rem;
+      color: rgba(224,232,255,0.28);
+      margin-top: 1rem;
+      font-style: italic;
+    }
+    @media (max-width: 768px) {
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { border-right: none; border-bottom: 1px solid var(--border); }
+      .service-card:last-child { border-bottom: none; }
     }
     .lang-hint {
       margin-top: 1rem;
@@ -456,6 +528,29 @@
     <p class="tg-text" data-i18n="tgsection">Joignable uniquement sur Telegram. Pas par snobisme, mais parce que c'est le seul endroit où l'infrastructure inspire confiance. Les autres réseaux sociaux te vendent, t'analysent et te censurent. Telegram laisse opérer librement, communiquer sans filtre et construire ce qu'on veut sans demander la permission à personne.</p>
   </div>
 
+  <!-- SERVICES -->
+  <div class="services-section">
+    <div class="sec-label" data-i18n="sec_sv">// SERVICES</div>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="service-title" data-i18n="sv1t">Icône Telegram</div>
+        <div class="service-body" data-i18n="sv1d"><div class="service-intro">Une icône créée pour toi, introuvable ailleurs. L'exclusivité est garantie.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Standard</span><span class="tier-price">100€</span></div><div class="tier-desc">Emoji custom à côté du pseudo. Impossible à copier.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Adaptatif</span><span class="tier-price">150€</span></div><div class="tier-desc">S'adapte au thème clair/sombre. Près du pseudo ou en fond de profil.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Double adaptatif</span><span class="tier-price">200€</span></div><div class="tier-desc">Fond de profil et emoji distinct en simultané. Identité visuelle complète.</div></div><div class="service-note">Livraison étape par étape. Aucun accès au compte requis.</div></div>
+      </div>
+      <div class="service-card">
+        <div class="service-title" data-i18n="sv2t">Username NFT Telegram</div>
+        <div class="service-body" data-i18n="sv2d"><div class="service-intro">Trois niveaux selon tes besoins.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Orientation</span><span class="tier-price">Gratuit</span></div><div class="tier-desc">Je t'oriente sur GetGems, tu achètes toi-même. Pourboire bienvenu.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Assisted Acquisition</span><span class="tier-price">30€ + prix du @</span></div><div class="tier-desc">Tu choisis, j'achète et t'accompagne jusqu'à l'activation.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Création sur Fragment</span><span class="tier-price">50€ + enchère</span></div><div class="tier-desc">Tu veux un @ précis qui n'existe pas encore. 7 jours d'attente. Résultat non garanti en cas de surenchère — honnêtement. Min. ~100 TON.</div></div></div>
+      </div>
+      <div class="service-card">
+        <div class="service-title" data-i18n="sv3t">Infrastructure Telegram</div>
+        <div class="service-body" data-i18n="sv3d"><div class="service-intro">Canal, groupe et bots configurés et opérationnels dès le premier jour.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 50€</span></div><div class="tier-desc">Maintenance 15€/mois.</div></div></div>
+      </div>
+      <div class="service-card">
+        <div class="service-title" data-i18n="sv4t">Bot Python sur mesure</div>
+        <div class="service-body" data-i18n="sv4d"><div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div></div>
+      </div>
+    </div>
+  </div>
+
   <!-- QUOTE -->
   <div class="quote-section">
     <div class="quote-glow"></div>
@@ -500,7 +595,16 @@
       tgtitle: "// TELEGRAM",
       tgonly: "only.",
       tgsection: "Joignable uniquement sur Telegram. Pas par snobisme, mais parce que c'est le seul endroit où l'infrastructure inspire confiance. Les autres réseaux sociaux te vendent, t'analysent et te censurent. Telegram laisse opérer librement, communiquer sans filtre et construire ce qu'on veut sans demander la permission à personne.",
-      quote: '<p>  Je ne vais   <span style="color: #00f5a0; font-weight: bold;">pas te faire</span>   gagner de l\'argent</p><br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.'
+      quote: '<p>  Je ne vais   <span style="color: #00f5a0; font-weight: bold;">pas te faire</span>   gagner de l\'argent</p><br/>mais te faire comprendre <span class="hl">pourquoi et comment</span><br/>certains en gagnent.',
+      sec_sv: "// SERVICES",
+      sv1t: "Icône Telegram",
+      sv1d: '<div class="service-intro">Une icône créée pour toi, introuvable ailleurs. L\'exclusivité est garantie.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Standard</span><span class="tier-price">100€</span></div><div class="tier-desc">Emoji custom à côté du pseudo. Impossible à copier.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Adaptatif</span><span class="tier-price">150€</span></div><div class="tier-desc">S\'adapte au thème clair/sombre. Près du pseudo ou en fond de profil.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Double adaptatif</span><span class="tier-price">200€</span></div><div class="tier-desc">Fond de profil et emoji distinct en simultané. Identité visuelle complète.</div></div><div class="service-note">Livraison étape par étape. Aucun accès au compte requis.</div>',
+      sv2t: "Username NFT Telegram",
+      sv2d: '<div class="service-intro">Trois niveaux selon tes besoins.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Orientation</span><span class="tier-price">Gratuit</span></div><div class="tier-desc">Je t\'oriente sur GetGems, tu achètes toi-même. Pourboire bienvenu.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Assisted Acquisition</span><span class="tier-price">30€ + prix du @</span></div><div class="tier-desc">Tu choisis, j\'achète et t\'accompagne jusqu\'à l\'activation.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Création sur Fragment</span><span class="tier-price">50€ + enchère</span></div><div class="tier-desc">Tu veux un @ précis qui n\'existe pas encore. 7 jours d\'attente. Résultat non garanti en cas de surenchère — honnêtement. Min. ~100 TON.</div></div>',
+      sv3t: "Infrastructure Telegram",
+      sv3d: '<div class="service-intro">Canal, groupe et bots configurés et opérationnels dès le premier jour.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 50€</span></div><div class="tier-desc">Maintenance 15€/mois.</div></div>',
+      sv4t: "Bot Python sur mesure",
+      sv4d: '<div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div>'
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -523,7 +627,16 @@
       privacy: "No data collected. No cookies. Full compliance with Telegram's ToS.",
       tgtitle: "// TELEGRAM",
       tgonly: "only.",
-      tgsection: "Only reachable on Telegram. Not out of stubbornness, but because it's the only platform worth trusting. Every other social network sells you, tracks you, or quietly decides what you're allowed to say. Telegram lets you operate freely, communicate without a filter, and build what you want without asking anyone for permission."
+      tgsection: "Only reachable on Telegram. Not out of stubbornness, but because it's the only platform worth trusting. Every other social network sells you, tracks you, or quietly decides what you're allowed to say. Telegram lets you operate freely, communicate without a filter, and build what you want without asking anyone for permission.",
+      sec_sv: "// SERVICES",
+      sv1t: "Telegram Icon",
+      sv1d: '<div class="service-intro">An icon built for you, found nowhere else. Exclusivity guaranteed.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Standard</span><span class="tier-price">100€</span></div><div class="tier-desc">Custom emoji next to your username. Can\'t be copied.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Adaptive</span><span class="tier-price">150€</span></div><div class="tier-desc">Adapts to light/dark theme. Next to username or profile background.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Double Adaptive</span><span class="tier-price">200€</span></div><div class="tier-desc">Profile background and a different emoji next to the username simultaneously. Full visual identity.</div></div><div class="service-note">Step-by-step delivery. No account access required.</div>',
+      sv2t: "Username NFT Telegram",
+      sv2d: '<div class="service-intro">Three tiers depending on your needs.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Orientation</span><span class="tier-price">Free</span></div><div class="tier-desc">I point you to GetGems, you buy it yourself. Tips welcome.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Assisted Acquisition</span><span class="tier-price">30€ + @ price</span></div><div class="tier-desc">You pick it, I buy it and guide you through activation.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Fragment Creation</span><span class="tier-price">50€ + auction</span></div><div class="tier-desc">You want a specific @ that doesn\'t exist yet. 7-day wait. Result not guaranteed if outbid — being upfront. Min. ~100 TON.</div></div>',
+      sv3t: "Telegram Infrastructure",
+      sv3d: '<div class="service-intro">Channel, group and bots set up and ready to run from day one.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 50€</span></div><div class="tier-desc">Maintenance 15€/month.</div></div>',
+      sv4t: "Custom Python Bot",
+      sv4d: '<div class="service-intro">Built for your exact needs. Moderation, payments, NFT access, OSINT, scheduling.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">On request</span><span class="tier-price">from 100€</span></div><div class="tier-desc">Maintenance 20€/month.</div></div>'
     },
     ru: {
       tag: "// ЛИЧНЫЕ ИССЛЕДОВАНИЯ — ЖИВЫЕ ТЕСТЫ — TELEGRAM",
@@ -546,7 +659,16 @@
       quote: '<p>  Я не собираюсь   <span style="color: #00f5a0; font-weight: bold;">помочь тебе</span>   заработать деньги</p><br/>но помогу понять <span class="hl">почему и как</span><br/>некоторые это делают.',
       tgtitle: "// TELEGRAM",
       tgonly: "только.",
-      tgsection: "На связи только в Telegram. Не из упрямства, а потому что это единственная платформа, которой можно доверять. Все остальные соцсети тебя продают, следят и решают что тебе можно говорить. Telegram даёт возможность работать свободно, общаться без фильтров и строить что нужно, ни у кого не спрашивая разрешения."
+      tgsection: "На связи только в Telegram. Не из упрямства, а потому что это единственная платформа, которой можно доверять. Все остальные соцсети тебя продают, следят и решают что тебе можно говорить. Telegram даёт возможность работать свободно, общаться без фильтров и строить что нужно, ни у кого не спрашивая разрешения.",
+      sec_sv: "// СЕРВИСЫ",
+      sv1t: "Иконка Telegram",
+      sv1d: '<div class="service-intro">Иконка созданная для тебя, которую не найти нигде. Эксклюзивность гарантирована.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Стандарт</span><span class="tier-price">100€</span></div><div class="tier-desc">Кастомный эмодзи рядом с ником. Нельзя скопировать.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Адаптивный</span><span class="tier-price">150€</span></div><div class="tier-desc">Адаптируется к светлой/тёмной теме. Рядом с ником или фон профиля.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Двойной адаптивный</span><span class="tier-price">200€</span></div><div class="tier-desc">Фон профиля и другой эмодзи рядом с ником одновременно. Полная визуальная идентичность.</div></div><div class="service-note">Доставка пошагово. Доступ к аккаунту не требуется.</div>',
+      sv2t: "Username NFT Telegram",
+      sv2d: '<div class="service-intro">Три уровня в зависимости от потребностей.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Ориентация</span><span class="tier-price">Бесплатно</span></div><div class="tier-desc">Направляю на GetGems, покупаешь сам. Чаевые приветствуются.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Assisted Acquisition</span><span class="tier-price">30€ + цена @</span></div><div class="tier-desc">Ты выбираешь, я покупаю и сопровождаю до активации.</div></div><div class="service-tier"><div class="tier-label"><span class="tier-name">Создание на Fragment</span><span class="tier-price">50€ + аукцион</span></div><div class="tier-desc">Хочешь конкретный @, которого ещё нет. 7 дней ожидания. Результат не гарантирован при перебивке ставки — честно об этом. Мин. ~100 TON.</div></div>',
+      sv3t: "Инфраструктура Telegram",
+      sv3d: '<div class="service-intro">Канал, группа и боты настроены и готовы к работе с первого дня.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 50€</span></div><div class="tier-desc">Обслуживание 15€/месяц.</div></div>',
+      sv4t: "Кастомный Python бот",
+      sv4d: '<div class="service-intro">Собран под твои точные потребности. Модерация, платежи, NFT доступ, OSINT, планирование.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">По запросу</span><span class="tier-price">от 100€</span></div><div class="tier-desc">Обслуживание 20€/месяц.</div></div>'
     }
   };
 
@@ -573,7 +695,7 @@
   // ── ANIMATIONS ───────────────────────────────────────────────
 
   // Fade up au scroll sur les sections
-  var fadeEls = document.querySelectorAll('.univers, .bio-section, .tg-section, .quote-section, footer');
+  var fadeEls = document.querySelectorAll('.univers, .bio-section, .tg-section, .services-section, .quote-section, footer');
   var fadeObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
