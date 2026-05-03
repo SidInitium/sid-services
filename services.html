@@ -218,7 +218,9 @@
       btn.classList.toggle('active', btn.dataset.lang === lang);
     });
     document.documentElement.lang = lang;
+    sessionStorage.setItem('selected_lang', lang);
   }
+  setLang(sessionStorage.getItem('selected_lang') || 'fr');
 
   var fadeEls = document.querySelectorAll('.services-section, footer');
   var fadeObs = new IntersectionObserver(function(entries) {
