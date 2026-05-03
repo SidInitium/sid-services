@@ -209,7 +209,9 @@
     const ctaBtn = document.querySelector('.cta-btn');
     if (ctaBtn) ctaBtn.href = telegramLinks[lang];
     document.documentElement.lang = lang;
+    sessionStorage.setItem('selected_lang', lang);
   }
+  setLang(sessionStorage.getItem('selected_lang') || 'fr');
 
   var fadeEls = document.querySelectorAll('.contact-section, footer');
   var fadeObs = new IntersectionObserver(function(entries) {
