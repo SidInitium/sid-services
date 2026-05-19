@@ -51,6 +51,15 @@
     .quote-mark { font-family: 'Share Tech Mono', monospace; font-size: 80px; color: var(--purple); opacity: 0.2; line-height: 0.4; display: block; margin-bottom: 2rem; }
     .quote-text { font-size: clamp(22px, 3.2vw, 34px); font-weight: 700; color: #fff; line-height: 1.5; }
     .quote-warning { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 2rem; padding: 6px 16px; border: 1px solid rgba(255,180,0,0.35); background: rgba(255,180,0,0.04); font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 2px; color: rgba(255,180,0,0.7); }
+    .faq-section { padding: 5rem 3rem; border-top: 1px solid var(--border); }
+    .faq-inner { max-width: 820px; margin: 0 auto; }
+    .faq-list { margin-top: 2rem; }
+    .faq-item { padding: 1.25rem 0; border-bottom: 1px solid var(--border); }
+    .faq-item:first-child { border-top: 1px solid var(--border); }
+    .faq-q { font-family: 'Share Tech Mono', monospace; font-size: 12px; color: var(--green); letter-spacing: 1px; margin-bottom: 0.5rem; }
+    .faq-q::before { content: '> '; opacity: 0.45; }
+    .faq-a { font-size: 14px; color: var(--muted); line-height: 1.6; padding-left: 1rem; }
+    @media (max-width: 768px) { .faq-section { padding: 4rem 1.5rem; } }
     #music-wrap { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
     #music-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(0,255,180,0.45); letter-spacing: 0.1em; user-select: none; }
     #music-toggle { background: rgba(5,8,16,0.75); border: 1px solid rgba(0,255,180,0.25); color: rgba(0,255,180,0.55); font-size: 18px; width: 44px; height: 29px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s; line-height: 1; }
@@ -97,6 +106,34 @@
       <div class="service-card">
         <div class="service-title" data-i18n="sv4t">Bot Python sur mesure</div>
         <div class="service-body" data-i18n="sv4d"><div class="service-intro">Conçu selon tes besoins exacts. Modération, paiements, accès NFT, OSINT, planification.</div><div class="service-tier"><div class="tier-label"><span class="tier-name">Sur devis</span><span class="tier-price">à partir de 100€</span></div><div class="tier-desc">Maintenance 20€/mois.</div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="faq-section">
+    <div class="faq-inner">
+      <div class="sec-label" data-i18n="faq_title">// Questions fréquentes</div>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" data-i18n="faq_q1">C'est quoi un emoji de statut ?</div>
+          <div class="faq-a" data-i18n="faq_a1">L'icône qui s'affiche à côté de ton pseudo sur Telegram.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" data-i18n="faq_q2">C'est quoi un emoji de fond ?</div>
+          <div class="faq-a" data-i18n="faq_a2">L'image qui remplit l'arrière-plan de ton profil Telegram.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" data-i18n="faq_q3">C'est quoi adaptatif ?</div>
+          <div class="faq-a" data-i18n="faq_a3">Il change automatiquement selon si Telegram est en mode clair ou sombre.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" data-i18n="faq_q4">Faut te donner accès à mon compte ?</div>
+          <div class="faq-a" data-i18n="faq_a4">Non, jamais. Je te guide étape par étape.</div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" data-i18n="faq_q5">Comment te contacter ?</div>
+          <div class="faq-a" data-i18n="faq_a5">Uniquement sur Telegram.</div>
+        </div>
       </div>
     </div>
   </div>
@@ -148,7 +185,13 @@
       nav_bio: "À PROPOS", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← RETOUR",
       contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, rejoins le canal ou contacte directement.",
       footer_credit: "Conçu et développé par Sid",
-      main_quote: '<span class="hl">Je ne vais pas te faire gagner de l\'argent</span> mais te faire <span class="hl">gagner du temps</span> en comprenant <span class="hl">pourquoi et comment</span> certains en gagnent.'
+      main_quote: '<span class="hl">Je ne vais pas te faire gagner de l\'argent</span> mais te faire <span class="hl">gagner du temps</span> en comprenant <span class="hl">pourquoi et comment</span> certains en gagnent.',
+      faq_title: "// Questions fréquentes",
+      faq_q1: "C'est quoi un emoji de statut ?", faq_a1: "L'icône qui s'affiche à côté de ton pseudo sur Telegram.",
+      faq_q2: "C'est quoi un emoji de fond ?", faq_a2: "L'image qui remplit l'arrière-plan de ton profil Telegram.",
+      faq_q3: "C'est quoi adaptatif ?", faq_a3: "Il change automatiquement selon si Telegram est en mode clair ou sombre.",
+      faq_q4: "Faut te donner accès à mon compte ?", faq_a4: "Non, jamais. Je te guide étape par étape.",
+      faq_q5: "Comment te contacter ?", faq_a5: "Uniquement sur Telegram."
     },
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
@@ -175,7 +218,13 @@
       nav_bio: "ABOUT", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← BACK",
       contact_intro: "Available on Telegram only. For any question or service request, join the channel or reach out directly.",
       footer_credit: "Designed and built by Sid",
-      main_quote: '<span class="hl">I\'m not going to make you earn money</span> but save you <span class="hl">time and energy</span> by understanding <span class="hl">why and how</span> some people do.'
+      main_quote: '<span class="hl">I\'m not going to make you earn money</span> but save you <span class="hl">time and energy</span> by understanding <span class="hl">why and how</span> some people do.',
+      faq_title: "// FAQ",
+      faq_q1: "What is a status emoji?", faq_a1: "The icon displayed next to your username on Telegram.",
+      faq_q2: "What is a profile background emoji?", faq_a2: "The image that fills the background of your Telegram profile.",
+      faq_q3: "What does adaptive mean?", faq_a3: "It automatically changes based on Telegram light or dark mode.",
+      faq_q4: "Do you need access to my account?", faq_a4: "Never. I guide you step by step.",
+      faq_q5: "How to contact you?", faq_a5: "Telegram only."
     },
     ru: {
       tag: "// ЛИЧНЫЕ ИССЛЕДОВАНИЯ — ЖИВЫЕ ТЕСТЫ — TELEGRAM",
@@ -202,7 +251,13 @@
       nav_bio: "ОБО МНЕ", nav_services: "СЕРВИСЫ", nav_contact: "КОНТАКТ", nav_back: "← НАЗАД",
       contact_intro: "Доступен только в Telegram. По любому вопросу или запросу — присоединяйся к каналу или пиши напрямую.",
       footer_credit: "Разработано Сидом",
-      main_quote: '<span class="hl">Я не собираюсь помочь тебе заработать деньги</span> но сэкономлю тебе <span class="hl">время</span> объяснив <span class="hl">почему и как</span> некоторые это делают.'
+      main_quote: '<span class="hl">Я не собираюсь помочь тебе заработать деньги</span> но сэкономлю тебе <span class="hl">время</span> объяснив <span class="hl">почему и как</span> некоторые это делают.',
+      faq_title: "// Частые вопросы",
+      faq_q1: "Что такое эмодзи статуса ?", faq_a1: "Иконка рядом с твоим ником в Telegram.",
+      faq_q2: "Что такое эмодзи фона профиля ?", faq_a2: "Изображение на заднем плане твоего профиля Telegram.",
+      faq_q3: "Что значит адаптивный ?", faq_a3: "Автоматически меняется в зависимости от светлой или тёмной темы Telegram.",
+      faq_q4: "Нужен ли доступ к моему аккаунту ?", faq_a4: "Никогда. Я сопровождаю тебя шаг за шагом.",
+      faq_q5: "Как с тобой связаться ?", faq_a5: "Только в Telegram."
     }
   };
 
