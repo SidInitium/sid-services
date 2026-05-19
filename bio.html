@@ -77,7 +77,7 @@
 <div class="bg-grid"></div>
 <div class="wrap">
 
-  <a class="back-btn" href="index.html" data-i18n="nav_back">← RETOUR</a>
+  <a class="back-btn" href="home.html" target="main" data-i18n="nav_back">← RETOUR</a>
 
   <div class="lang-bar">
     <div class="lang-btns">
@@ -155,7 +155,7 @@
 
 </div>
 
-<audio id="bg-music" src="bjorns-anvil.mp3" loop preload="none"></audio>
+
 
 <script>
   const i18n = {
@@ -276,35 +276,24 @@
   (function() {
     var btn = document.getElementById('music-toggle');
     var label = document.getElementById('music-label');
-    var audio = document.getElementById('bg-music');
     var playing = false;
 
     label.textContent = '▶ MUSIC';
 
-    if (sessionStorage.getItem('music_playing') === 'true') {
-      var t = parseFloat(sessionStorage.getItem('music_time') || '0');
-      audio.play().then(function() {
-        audio.currentTime = t;
-        btn.textContent = '♫';
-        btn.classList.add('playing');
-        label.textContent = '■ MUSIC';
-        playing = true;
-      }).catch(function() {});
-    }
+    window.addEventListener('message', function(e) {
+      if (!e.data || e.data.type !== 'music_state') return;
+      playing = e.data.playing;
+      btn.textContent = playing ? '♫' : '♪';
+      label.textContent = playing ? '■ MUSIC' : '▶ MUSIC';
+      if (playing) btn.classList.add('playing');
+      else btn.classList.remove('playing');
+    });
 
     btn.addEventListener('click', function() {
-      if (!playing) { audio.play(); btn.textContent = '♫'; btn.classList.add('playing'); label.textContent = '■ MUSIC'; }
-      else { audio.pause(); btn.textContent = '♪'; btn.classList.remove('playing'); label.textContent = '▶ MUSIC'; }
-      playing = !playing;
+      window.parent.postMessage({ type: 'music_toggle' }, '*');
     });
 
-    document.addEventListener('click', function(e) {
-      var link = e.target.closest('a[href]');
-      if (link) {
-        sessionStorage.setItem('music_playing', playing ? 'true' : 'false');
-        sessionStorage.setItem('music_time', audio.currentTime);
-      }
-    });
+    window.parent.postMessage({ type: 'music_get' }, '*');
   })();
 </script>
 </body>
