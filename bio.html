@@ -67,8 +67,10 @@
     #music-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(0,255,180,0.45); letter-spacing: 0.1em; user-select: none; }
     #music-toggle { background: rgba(5,8,16,0.75); border: 1px solid rgba(0,255,180,0.25); color: rgba(0,255,180,0.55); font-size: 18px; width: 44px; height: 29px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s; line-height: 1; }
     #music-toggle:hover { border-color: rgba(0,255,180,0.6); color: #00FFB4; box-shadow: 0 0 8px rgba(0,255,180,0.2); }
-    #music-toggle.playing { border-color: rgba(0,255,180,0.5); color: #00FFB4; box-shadow: 0 0 10px rgba(0,255,180,0.15); }
-    .credit-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: rgba(224,232,255,0.25); letter-spacing: 1px; text-align: right; }
+    #music-toggle.playing { border-color: rgba(0,255,180,0.5); color: #00FFB4; box-shadow: 0 0 10px rgba(0,255,180,0.15); animation: none; }
+    @keyframes music-pulse { 0%, 100% { border-color: rgba(0,255,180,0.25); box-shadow: none; } 50% { border-color: rgba(0,255,180,0.6); box-shadow: 0 0 10px rgba(0,255,180,0.2); } }
+    #music-toggle:not(.playing) { animation: music-pulse 2s ease-in-out infinite; }
+    .credit-tag { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: right; }
   </style>
 </head>
 <body>
@@ -160,7 +162,7 @@
     fr: {
       tag: "// RECHERCHES PERSONNELLES — TESTS LIVE — TELEGRAM",
       intent: 'Ces univers sont complexes. Je les explore depuis longtemps et je partage ce que j\'ai <span class="hl">compris en les vivant</span>.',
-      sub: "Crypto · Blockchain · Telegram · Trading · Web3<br/>Pas de promesses. Juste ce que j'ai testé, cassé et reconstruit.",
+      sub: "Que tu démarres ou que tu creuses — Telegram · Blockchain · Web3 · Crypto · Trading.<br/>Pas de promesses. Juste ce que j'ai testé, cassé et reconstruit.",
       cta: "Contact",
       sec1: "// LES UNIVERS",
       u1t: "Crypto & Trading",
@@ -192,7 +194,7 @@
     en: {
       tag: "// PERSONAL RESEARCH — LIVE TESTS — TELEGRAM",
       intent: 'These worlds are complex. I\'ve been exploring them for a while and I share what I\'ve <span class="hl">learned by living inside them</span>.',
-      sub: "Crypto · Blockchain · Telegram · Trading · Web3<br/>No promises. Just what I've tested, broken and rebuilt.",
+      sub: "Whether you're starting out or going deeper — Telegram · Blockchain · Web3 · Crypto · Trading.<br/>No promises. Just what I've tested, broken and rebuilt.",
       cta: "Contact",
       sec1: "// THE UNIVERSES",
       u1t: "Crypto & Trading", u1d: "CeFi and DeFi, CEX and DEX, spot and futures. Markets aren't understood through YouTube videos. They're understood by being inside them.",
@@ -219,7 +221,7 @@
     ru: {
       tag: "// ЛИЧНЫЕ ИССЛЕДОВАНИЯ — ЖИВЫЕ ТЕСТЫ — TELEGRAM",
       intent: 'Эти миры сложные. Я в них давно и делюсь только тем, что <span class="hl">понял на собственном опыте</span>.',
-      sub: "Крипто · Блокчейн · Telegram · Трейдинг · Web3<br/>Никаких обещаний. Только то, что я тестировал, ломал и собирал заново.",
+      sub: "Только начинаешь или уже копаешь — Telegram · Blockchain · Web3 · Крипто · Трейдинг.<br/>Никаких обещаний. Только то, что я тестировал, ломал и собирал заново.",
       cta: "Контакт",
       sec1: "// НАПРАВЛЕНИЯ",
       u1t: "Крипто и трейдинг", u1d: "CeFi и DeFi, CEX и DEX, спот и фьючерсы. Рынки не понимают через ролики на YouTube. Их понимают изнутри.",
@@ -273,8 +275,11 @@
 
   (function() {
     var btn = document.getElementById('music-toggle');
+    var label = document.getElementById('music-label');
     var audio = document.getElementById('bg-music');
     var playing = false;
+
+    label.textContent = '▶ MUSIC';
 
     if (sessionStorage.getItem('music_playing') === 'true') {
       var t = parseFloat(sessionStorage.getItem('music_time') || '0');
@@ -282,13 +287,14 @@
         audio.currentTime = t;
         btn.textContent = '♫';
         btn.classList.add('playing');
+        label.textContent = '■ MUSIC';
         playing = true;
       }).catch(function() {});
     }
 
     btn.addEventListener('click', function() {
-      if (!playing) { audio.play(); btn.textContent = '♫'; btn.classList.add('playing'); }
-      else { audio.pause(); btn.textContent = '♪'; btn.classList.remove('playing'); }
+      if (!playing) { audio.play(); btn.textContent = '♫'; btn.classList.add('playing'); label.textContent = '■ MUSIC'; }
+      else { audio.pause(); btn.textContent = '♪'; btn.classList.remove('playing'); label.textContent = '▶ MUSIC'; }
       playing = !playing;
     });
 

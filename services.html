@@ -64,8 +64,10 @@
     #music-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(0,255,180,0.45); letter-spacing: 0.1em; user-select: none; }
     #music-toggle { background: rgba(5,8,16,0.75); border: 1px solid rgba(0,255,180,0.25); color: rgba(0,255,180,0.55); font-size: 18px; width: 44px; height: 29px; border-radius: 4px; cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0; transition: border-color 0.2s, color 0.2s, box-shadow 0.2s; line-height: 1; }
     #music-toggle:hover { border-color: rgba(0,255,180,0.6); color: #00FFB4; box-shadow: 0 0 8px rgba(0,255,180,0.2); }
-    #music-toggle.playing { border-color: rgba(0,255,180,0.5); color: #00FFB4; box-shadow: 0 0 10px rgba(0,255,180,0.15); }
-    .credit-tag { font-family: 'Share Tech Mono', monospace; font-size: 9px; color: rgba(224,232,255,0.25); letter-spacing: 1px; text-align: right; }
+    #music-toggle.playing { border-color: rgba(0,255,180,0.5); color: #00FFB4; box-shadow: 0 0 10px rgba(0,255,180,0.15); animation: none; }
+    @keyframes music-pulse { 0%, 100% { border-color: rgba(0,255,180,0.25); box-shadow: none; } 50% { border-color: rgba(0,255,180,0.6); box-shadow: 0 0 10px rgba(0,255,180,0.2); } }
+    #music-toggle:not(.playing) { animation: music-pulse 2s ease-in-out infinite; }
+    .credit-tag { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; text-align: right; }
   </style>
 </head>
 <body>
@@ -322,8 +324,11 @@
 
   (function() {
     var btn = document.getElementById('music-toggle');
+    var label = document.getElementById('music-label');
     var audio = document.getElementById('bg-music');
     var playing = false;
+
+    label.textContent = '▶ MUSIC';
 
     if (sessionStorage.getItem('music_playing') === 'true') {
       var t = parseFloat(sessionStorage.getItem('music_time') || '0');
@@ -331,13 +336,14 @@
         audio.currentTime = t;
         btn.textContent = '♫';
         btn.classList.add('playing');
+        label.textContent = '■ MUSIC';
         playing = true;
       }).catch(function() {});
     }
 
     btn.addEventListener('click', function() {
-      if (!playing) { audio.play(); btn.textContent = '♫'; btn.classList.add('playing'); }
-      else { audio.pause(); btn.textContent = '♪'; btn.classList.remove('playing'); }
+      if (!playing) { audio.play(); btn.textContent = '♫'; btn.classList.add('playing'); label.textContent = '■ MUSIC'; }
+      else { audio.pause(); btn.textContent = '♪'; btn.classList.remove('playing'); label.textContent = '▶ MUSIC'; }
       playing = !playing;
     });
 
