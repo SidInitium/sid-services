@@ -655,7 +655,7 @@
   // ── ANIMATIONS ───────────────────────────────────────────────
 
   // Fade up au scroll sur les sections
-  var fadeEls = document.querySelectorAll('footer');
+  var fadeEls = document.querySelectorAll('.quote-section, footer');
   var fadeObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
