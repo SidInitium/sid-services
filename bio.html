@@ -60,6 +60,11 @@
     .foot-disclaimer { width: 100%; opacity: 0.6; }
     .foot-drops { width: 100%; color: var(--purple); text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, text-shadow 0.2s; }
     .foot-drops:hover { opacity: 1; text-shadow: 0 0 10px rgba(123,97,255,0.5); }
+    .foot-brand { text-decoration: none; transition: color 0.2s; }
+    .foot-brand:hover { color: var(--green); }
+    .foot-nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .foot-link { text-decoration: none; color: rgba(224,232,255,0.55); transition: color 0.2s; }
+    .foot-link:hover { color: var(--green); }
     @media (max-width: 900px) { .bio-section { grid-template-columns: 1fr; gap: 2rem; } .bio-left { position: static; } .tg-section { grid-template-columns: 1fr; gap: 2rem; } .tg-left { position: static; } }
     @media (max-width: 768px) { .univers { padding: 3.5rem 1.5rem; } .bio-section { padding: 3.5rem 1.5rem; } .tg-section { padding: 3.5rem 1.5rem; } .quote-section { padding: 4.5rem 1.5rem; } footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; } .lang-bar { padding: 0.8rem 1.2rem; } .back-btn { left: 1.2rem; } .univers-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 480px) { .univers-grid { grid-template-columns: 1fr; } .univers-item { border-right: none; border-bottom: 1px solid var(--border); } }
@@ -149,8 +154,12 @@
   </div>
 
   <footer>
-    <span class="foot-mono">SID<em>.</em>SERVICES</span>
-    <span class="foot-mono"><em>@SID_SERVICES</em>, TELEGRAM</span>
+    <a class="foot-mono foot-brand" href="home.html" target="main">SID<em>.</em>SERVICES</a>
+    <nav class="foot-nav">
+      <a class="foot-mono foot-link" href="bio.html" target="main" data-i18n="nav_bio">À PROPOS</a>
+      <a class="foot-mono foot-link" href="services.html" target="main" data-i18n="nav_services">SERVICES</a>
+      <a class="foot-mono foot-link" href="contact.html" target="main" data-i18n="nav_contact">CONTACT</a>
+    </nav>
     <a class="foot-mono foot-drops" href="https://t.me/+WH51czYw9VoyYzI1" target="_blank" rel="noopener noreferrer" data-i18n="foot_drops">🎁 Canal bonus · drops Premium &amp; Stars</a>
     <span class="foot-mono foot-disclaimer" data-i18n="disclaimer">Contenu éducatif uniquement. Pas de conseil financier. DYOR.</span>
     <span class="foot-mono foot-disclaimer" data-i18n="privacy">Aucune donnée collectée. Pas de cookies. Avril 2026.</span>
