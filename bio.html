@@ -58,6 +58,8 @@
     .foot-mono { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(224,232,255,0.55); letter-spacing: 2px; }
     .foot-mono em { color: var(--green); font-style: normal; }
     .foot-disclaimer { width: 100%; opacity: 0.6; }
+    .foot-drops { width: 100%; color: var(--purple); text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, text-shadow 0.2s; }
+    .foot-drops:hover { opacity: 1; text-shadow: 0 0 10px rgba(123,97,255,0.5); }
     @media (max-width: 900px) { .bio-section { grid-template-columns: 1fr; gap: 2rem; } .bio-left { position: static; } .tg-section { grid-template-columns: 1fr; gap: 2rem; } .tg-left { position: static; } }
     @media (max-width: 768px) { .univers { padding: 3.5rem 1.5rem; } .bio-section { padding: 3.5rem 1.5rem; } .tg-section { padding: 3.5rem 1.5rem; } .quote-section { padding: 4.5rem 1.5rem; } footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; } .lang-bar { padding: 0.8rem 1.2rem; } .back-btn { left: 1.2rem; } .univers-grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 480px) { .univers-grid { grid-template-columns: 1fr; } .univers-item { border-right: none; border-bottom: 1px solid var(--border); } }
@@ -149,6 +151,7 @@
   <footer>
     <span class="foot-mono">SID<em>.</em>SERVICES</span>
     <span class="foot-mono"><em>@SID_SERVICES</em>, TELEGRAM</span>
+    <a class="foot-mono foot-drops" href="https://t.me/+WH51czYw9VoyYzI1" target="_blank" rel="noopener noreferrer" data-i18n="foot_drops">🎁 Canal bonus · drops Premium &amp; Stars</a>
     <span class="foot-mono foot-disclaimer" data-i18n="disclaimer">Contenu éducatif uniquement. Pas de conseil financier. DYOR.</span>
     <span class="foot-mono foot-disclaimer" data-i18n="privacy">Aucune donnée collectée. Pas de cookies. Avril 2026.</span>
   </footer>
@@ -189,6 +192,7 @@
       nav_bio: "À PROPOS", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← RETOUR",
       contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, rejoins le canal ou contacte directement.",
       footer_credit: "Conçu et développé par Sid",
+      foot_drops: "🎁 Canal bonus · drops Premium & Stars",
       main_quote: '<span class="hl">Je ne vais pas te faire gagner de l\'argent</span> mais te faire <span class="hl">gagner du temps</span> en comprenant <span class="hl">pourquoi et comment</span> certains en gagnent.'
     },
     en: {
@@ -216,6 +220,7 @@
       nav_bio: "ABOUT", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← BACK",
       contact_intro: "Available on Telegram only. For any question or service request, join the channel or reach out directly.",
       footer_credit: "Designed and built by Sid",
+      foot_drops: "🎁 Bonus channel · Premium & Stars drops",
       main_quote: '<span class="hl">I\'m not going to make you earn money</span> but save you <span class="hl">time and energy</span> by understanding <span class="hl">why and how</span> some people do.'
     },
     ru: {
@@ -243,6 +248,7 @@
       nav_bio: "ОБО МНЕ", nav_services: "СЕРВИСЫ", nav_contact: "КОНТАКТ", nav_back: "← НАЗАД",
       contact_intro: "Доступен только в Telegram. По любому вопросу или запросу, присоединяйся к каналу или пиши напрямую.",
       footer_credit: "Разработано Сидом",
+      foot_drops: "🎁 Бонус-канал · дропы Premium и Stars",
       main_quote: '<span class="hl">Я не собираюсь помочь тебе заработать деньги</span> но сэкономлю тебе <span class="hl">время</span> объяснив <span class="hl">почему и как</span> некоторые это делают.'
     }
   };
