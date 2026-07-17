@@ -42,6 +42,11 @@
     .foot-disclaimer { width: 100%; opacity: 0.6; }
     .foot-drops { width: 100%; color: var(--purple); text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, text-shadow 0.2s; }
     .foot-drops:hover { opacity: 1; text-shadow: 0 0 10px rgba(123,97,255,0.5); }
+    .foot-brand { text-decoration: none; transition: color 0.2s; }
+    .foot-brand:hover { color: var(--green); }
+    .foot-nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+    .foot-link { text-decoration: none; color: rgba(224,232,255,0.55); transition: color 0.2s; }
+    .foot-link:hover { color: var(--green); }
     .drops-section { padding: 5rem 3rem; border-top: 1px solid var(--border); position: relative; overflow: hidden; }
     .drops-inner { max-width: 580px; position: relative; z-index: 1; }
     .drops-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--purple); letter-spacing: 4px; opacity: 0.7; margin-bottom: 1.5rem; }
@@ -50,6 +55,9 @@
     .gift-btn:hover { background: var(--purple); color: #fff; box-shadow: 0 0 20px rgba(123,97,255,0.3); }
     .gift-btn:hover .arrow { transform: translateX(4px); }
     .gift-icon { font-size: 16px; }
+    .cta-row { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+    .drops-chip { display: inline-flex; align-items: center; gap: 8px; padding: 0.6rem 1.2rem; border: 1px solid rgba(123,97,255,0.35); color: var(--purple); font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: all 0.25s; }
+    .drops-chip:hover { background: rgba(123,97,255,0.12); border-color: var(--purple); box-shadow: 0 0 14px rgba(123,97,255,0.25); }
     .drops-glow { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); width: 420px; height: 420px; background: radial-gradient(circle, rgba(123,97,255,0.08) 0%, transparent 65%); pointer-events: none; animation: drift 14s ease-in-out infinite; }
     .drops-section { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .drops-section.visible { opacity: 1; transform: translateY(0); }
@@ -97,12 +105,18 @@
     <div class="glow2"></div>
     <div class="contact-label">// CONTACT</div>
     <p class="contact-intro" data-i18n="contact_intro">Disponible uniquement sur Telegram. Pour toute question ou demande de service, contacte directement.</p>
+    <div class="cta-row">
     <a class="cta-btn" href="https://t.me/Sid_Services" target="_blank" rel="noopener noreferrer">
       <svg class="tg-icon" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.32 14.617l-2.96-.924c-.643-.204-.657-.643.136-.953l11.57-4.461c.537-.194 1.006.131.828.942z"/></svg>
       <span class="dot-live"></span>
       <span data-i18n="cta">Contact</span>
       <span class="arrow">→</span>
     </a>
+      <a class="drops-chip" href="https://t.me/+WH51czYw9VoyYzI1" target="_blank" rel="noopener noreferrer">
+        <span class="gift-icon">🎁</span>
+        <span data-i18n="drops_chip">drops</span>
+      </a>
+    </div>
   </div>
 
   <!-- DROPS -->
@@ -129,8 +143,12 @@
   </div>
 
   <footer>
-    <span class="foot-mono">SID<em>.</em>SERVICES</span>
-    <span class="foot-mono"><em>@SID_SERVICES</em>, TELEGRAM</span>
+    <a class="foot-mono foot-brand" href="home.html" target="main">SID<em>.</em>SERVICES</a>
+    <nav class="foot-nav">
+      <a class="foot-mono foot-link" href="bio.html" target="main" data-i18n="nav_bio">À PROPOS</a>
+      <a class="foot-mono foot-link" href="services.html" target="main" data-i18n="nav_services">SERVICES</a>
+      <a class="foot-mono foot-link" href="contact.html" target="main" data-i18n="nav_contact">CONTACT</a>
+    </nav>
     <a class="foot-mono foot-drops" href="https://t.me/+WH51czYw9VoyYzI1" target="_blank" rel="noopener noreferrer" data-i18n="foot_drops">🎁 Canal bonus · drops Premium &amp; Stars</a>
     <span class="foot-mono foot-disclaimer" data-i18n="disclaimer">Contenu éducatif uniquement. Pas de conseil financier. DYOR.</span>
     <span class="foot-mono foot-disclaimer" data-i18n="privacy">Aucune donnée collectée. Pas de cookies. Avril 2026.</span>
@@ -169,6 +187,7 @@
       footer_credit: "Conçu et développé par Sid",
       drops_text: "De temps en temps, j'offre du Premium et des Stars sur mon canal bonus. Accès libre, tu prends ce qui passe.",
       drops_cta: "REJOINDRE LES DROPS",
+      drops_chip: "drops",
       foot_drops: "🎁 Canal bonus · drops Premium & Stars",
       main_quote: '<span class="hl">Je ne vais pas te faire gagner de l\'argent</span> mais te faire <span class="hl">gagner du temps</span> en comprenant <span class="hl">pourquoi et comment</span> certains en gagnent.'
     },
@@ -199,6 +218,7 @@
       footer_credit: "Designed and built by Sid",
       drops_text: "Every now and then, I drop Premium and Stars on my bonus channel. Free to join, grab what comes up.",
       drops_cta: "JOIN THE DROPS",
+      drops_chip: "drops",
       foot_drops: "🎁 Bonus channel · Premium & Stars drops",
       main_quote: '<span class="hl">I\'m not going to make you earn money</span> but save you <span class="hl">time and energy</span> by understanding <span class="hl">why and how</span> some people do.'
     },
@@ -229,6 +249,7 @@
       footer_credit: "Разработано Сидом",
       drops_text: "Время от времени я раздаю Premium и Stars в бонус-канале. Вход свободный, лови момент.",
       drops_cta: "ВОЙТИ В ДРОПЫ",
+      drops_chip: "дропы",
       foot_drops: "🎁 Бонус-канал · дропы Premium и Stars",
       main_quote: '<span class="hl">Я не собираюсь помочь тебе заработать деньги</span> но сэкономлю тебе <span class="hl">время</span> объяснив <span class="hl">почему и как</span> некоторые это делают.'
     }
