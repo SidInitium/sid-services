@@ -40,6 +40,19 @@
     .foot-mono { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(224,232,255,0.55); letter-spacing: 2px; }
     .foot-mono em { color: var(--green); font-style: normal; }
     .foot-disclaimer { width: 100%; opacity: 0.6; }
+    .foot-drops { width: 100%; color: var(--purple); text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, text-shadow 0.2s; }
+    .foot-drops:hover { opacity: 1; text-shadow: 0 0 10px rgba(123,97,255,0.5); }
+    .drops-section { padding: 5rem 3rem; border-top: 1px solid var(--border); position: relative; overflow: hidden; }
+    .drops-inner { max-width: 580px; position: relative; z-index: 1; }
+    .drops-label { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: var(--purple); letter-spacing: 4px; opacity: 0.7; margin-bottom: 1.5rem; }
+    .drops-text { font-size: clamp(15px, 1.6vw, 18px); color: rgba(224,232,255,0.68); line-height: 1.9; margin-bottom: 2.5rem; }
+    .gift-btn { display: inline-flex; align-items: center; gap: 12px; padding: 0.9rem 2.2rem; background: transparent; border: 1px solid rgba(123,97,255,0.4); color: var(--purple); font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; text-decoration: none; transition: all 0.25s; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); }
+    .gift-btn:hover { background: var(--purple); color: #fff; box-shadow: 0 0 20px rgba(123,97,255,0.3); }
+    .gift-btn:hover .arrow { transform: translateX(4px); }
+    .gift-icon { font-size: 16px; }
+    .drops-glow { position: absolute; right: 5%; top: 50%; transform: translateY(-50%); width: 420px; height: 420px; background: radial-gradient(circle, rgba(123,97,255,0.08) 0%, transparent 65%); pointer-events: none; animation: drift 14s ease-in-out infinite; }
+    .drops-section { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .drops-section.visible { opacity: 1; transform: translateY(0); }
     @media (max-width: 768px) { .contact-section { padding: 5rem 1.5rem 3rem; } footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; } .lang-bar { padding: 0.8rem 1.2rem; } .back-btn { left: 1.2rem; } }
     .contact-section, footer { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .contact-section.visible, footer.visible { opacity: 1; transform: translateY(0); }
@@ -92,6 +105,20 @@
     </a>
   </div>
 
+  <!-- DROPS -->
+  <div class="drops-section">
+    <div class="drops-glow"></div>
+    <div class="drops-inner">
+      <div class="drops-label">// DROPS</div>
+      <p class="drops-text" data-i18n="drops_text">De temps en temps, j'offre du Premium et des Stars sur mon canal bonus. Accès libre, tu prends ce qui passe.</p>
+      <a class="gift-btn" href="https://t.me/+WH51czYw9VoyYzI1" target="_blank" rel="noopener noreferrer">
+        <span class="gift-icon">🎁</span>
+        <span data-i18n="drops_cta">REJOINDRE LES DROPS</span>
+        <span class="arrow">→</span>
+      </a>
+    </div>
+  </div>
+
   <div class="quote-section">
     <div class="quote-glow"></div>
     <div class="quote-inner">
@@ -104,6 +131,7 @@
   <footer>
     <span class="foot-mono">SID<em>.</em>SERVICES</span>
     <span class="foot-mono"><em>@SID_SERVICES</em>, TELEGRAM</span>
+    <a class="foot-mono foot-drops" href="https://t.me/+WH51czYw9VoyYzI1" target="_blank" rel="noopener noreferrer" data-i18n="foot_drops">🎁 Canal bonus · drops Premium &amp; Stars</a>
     <span class="foot-mono foot-disclaimer" data-i18n="disclaimer">Contenu éducatif uniquement. Pas de conseil financier. DYOR.</span>
     <span class="foot-mono foot-disclaimer" data-i18n="privacy">Aucune donnée collectée. Pas de cookies. Avril 2026.</span>
   </footer>
@@ -139,6 +167,9 @@
       nav_bio: "À PROPOS", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← RETOUR",
       contact_intro: "Disponible uniquement sur Telegram. Pour toute question ou demande de service, contacte directement.",
       footer_credit: "Conçu et développé par Sid",
+      drops_text: "De temps en temps, j'offre du Premium et des Stars sur mon canal bonus. Accès libre, tu prends ce qui passe.",
+      drops_cta: "REJOINDRE LES DROPS",
+      foot_drops: "🎁 Canal bonus · drops Premium & Stars",
       main_quote: '<span class="hl">Je ne vais pas te faire gagner de l\'argent</span> mais te faire <span class="hl">gagner du temps</span> en comprenant <span class="hl">pourquoi et comment</span> certains en gagnent.'
     },
     en: {
@@ -166,6 +197,9 @@
       nav_bio: "ABOUT", nav_services: "SERVICES", nav_contact: "CONTACT", nav_back: "← BACK",
       contact_intro: "Available on Telegram only. For any question or service request, reach out directly.",
       footer_credit: "Designed and built by Sid",
+      drops_text: "Every now and then, I drop Premium and Stars on my bonus channel. Free to join, grab what comes up.",
+      drops_cta: "JOIN THE DROPS",
+      foot_drops: "🎁 Bonus channel · Premium & Stars drops",
       main_quote: '<span class="hl">I\'m not going to make you earn money</span> but save you <span class="hl">time and energy</span> by understanding <span class="hl">why and how</span> some people do.'
     },
     ru: {
@@ -193,6 +227,9 @@
       nav_bio: "ОБО МНЕ", nav_services: "СЕРВИСЫ", nav_contact: "КОНТАКТ", nav_back: "← НАЗАД",
       contact_intro: "Доступен только в Telegram. По любому вопросу или запросу, пиши напрямую.",
       footer_credit: "Разработано Сидом",
+      drops_text: "Время от времени я раздаю Premium и Stars в бонус-канале. Вход свободный, лови момент.",
+      drops_cta: "ВОЙТИ В ДРОПЫ",
+      foot_drops: "🎁 Бонус-канал · дропы Premium и Stars",
       main_quote: '<span class="hl">Я не собираюсь помочь тебе заработать деньги</span> но сэкономлю тебе <span class="hl">время</span> объяснив <span class="hl">почему и как</span> некоторые это делают.'
     }
   };
@@ -215,7 +252,7 @@
   }
   setLang(sessionStorage.getItem('selected_lang') || 'fr');
 
-  var fadeEls = document.querySelectorAll('.contact-section, footer');
+  var fadeEls = document.querySelectorAll('.contact-section, .drops-section, footer');
   var fadeObs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
       if (e.isIntersecting) { e.target.classList.add('visible'); fadeObs.unobserve(e.target); }
