@@ -3,8 +3,5 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "Site statique sid.services, plus une fonction serverless pour le widget de chat.",
-  "dependencies": {
-    "@anthropic-ai/sdk": "^0.122.0"
-  }
+  "description": "Site statique sid.services, plus une fonction serverless pour le widget de chat. Aucune dependance: l'API Anthropic est appelee en HTTP direct."
 }
