@@ -10,10 +10,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
-    :root { --bg: #050810; --green: #00FFB4; --purple: #7B61FF; --muted: rgba(224,232,255,0.45); --border: rgba(224,232,255,0.07); }
+    :root { --bg: #050810; --green: #00FFB4; --purple: #7B61FF; --muted: rgba(224,232,255,0.80); --border: rgba(224,232,255,0.07); }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-    body { background: var(--bg); color: rgba(224,232,255,0.85); font-family: 'Inter', system-ui, -apple-system, sans-serif; overflow-x: hidden; }
+    body { background: var(--bg); color: rgba(224,232,255,0.95); font-family: 'Inter', system-ui, -apple-system, sans-serif; overflow-x: hidden; }
     .bg-grid { position: fixed; inset: 0; background-image: linear-gradient(rgba(224,232,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(224,232,255,0.02) 1px, transparent 1px); background-size: 60px 60px; pointer-events: none; z-index: 0; }
     .wrap { position: relative; z-index: 1; }
     .lang-bar { display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; padding: 1rem 2.5rem; position: fixed; top: 0; right: 0; z-index: 200; }
@@ -34,16 +34,16 @@
     .service-tier { padding: 0.7rem 0; border-bottom: 1px solid var(--border); }
     .service-tier:last-of-type { border-bottom: none; }
     .tier-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 0.25rem; }
-    .tier-name { font-family: 'Share Tech Mono', monospace; color: rgba(224,232,255,0.8); font-size: 0.76rem; }
+    .tier-name { font-family: 'Share Tech Mono', monospace; color: rgba(224,232,255,0.95); font-size: 0.76rem; }
     .tier-price { font-family: 'Share Tech Mono', monospace; color: var(--green); font-size: 0.8rem; white-space: nowrap; margin-left: 1rem; }
     .tier-desc { font-size: 0.76rem; color: var(--muted); line-height: 1.5; }
-    .service-note { font-size: 0.7rem; color: rgba(224,232,255,0.28); margin-top: 1rem; font-style: italic; }
+    .service-note { font-size: 0.7rem; color: rgba(224,232,255,0.68); margin-top: 1rem; font-style: italic; }
     .payments { padding: clamp(3rem, 6vw, 4.5rem) clamp(1.5rem, 5vw, 3rem); border-top: 1px solid var(--border); display: flex; justify-content: center; }
     .payments-box { max-width: 760px; width: 100%; text-align: center; padding: 2.2rem 2.5rem; border: 1px solid rgba(0,255,180,0.28); background: rgba(0,255,180,0.03); box-shadow: 0 0 24px rgba(0,255,180,0.06); clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%); }
     .payments-tag { font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 4px; color: var(--purple); margin-bottom: 1.1rem; }
     .payments-text { font-family: 'Share Tech Mono', monospace; font-size: clamp(13px, 1.7vw, 16px); letter-spacing: 1px; line-height: 1.8; color: var(--green); }
     footer { padding: 2rem 3rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
-    .foot-mono { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(224,232,255,0.55); letter-spacing: 2px; }
+    .foot-mono { font-family: 'Share Tech Mono', monospace; font-size: 11px; color: rgba(224,232,255,0.88); letter-spacing: 2px; }
     .foot-mono em { color: var(--green); font-style: normal; }
     .foot-disclaimer { width: 100%; opacity: 0.6; }
     .foot-drops { width: 100%; color: var(--purple); text-decoration: none; opacity: 0.85; display: inline-flex; align-items: center; gap: 8px; transition: opacity 0.2s, text-shadow 0.2s; }
@@ -51,7 +51,7 @@
     .foot-brand { text-decoration: none; transition: color 0.2s; }
     .foot-brand:hover { color: var(--green); }
     .foot-nav { display: flex; gap: 1.2rem; flex-wrap: wrap; }
-    .foot-link { text-decoration: none; color: rgba(224,232,255,0.55); transition: color 0.2s; }
+    .foot-link { text-decoration: none; color: rgba(224,232,255,0.88); transition: color 0.2s; }
     .foot-link:hover { color: var(--green); }
     @media (max-width: 768px) { .services-section { padding: 6rem 1.5rem 3.5rem; } .services-grid { grid-template-columns: 1fr; } .service-card { border-right: none; border-bottom: 1px solid var(--border); } .service-card:last-child { border-bottom: none; } footer { padding: 1.5rem; flex-direction: column; align-items: flex-start; } .lang-bar { padding: 0.8rem 1.2rem; } .back-btn { left: 1.2rem; } }
     .services-section, .payments, footer { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
