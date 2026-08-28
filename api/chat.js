@@ -2,11 +2,16 @@
 // Fonction serverless Vercel (runtime Node). Proxy vers l'API Anthropic.
 // La cle API n'est JAMAIS exposee au navigateur, elle reste ici, cote serveur.
 
-import Anthropic from "@anthropic-ai/sdk";
+// Aucune dependance externe: on appelle l'API Anthropic en HTTP direct, avec le
+// fetch integre a Node. Rien a installer, donc rien qui puisse casser au
+// deploiement.
 
 // ---------------------------------------------------------------------------
 // Reglages
 // ---------------------------------------------------------------------------
+
+const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
+const ANTHROPIC_VERSION = "2023-06-01";
 
 const MODEL = "claude-sonnet-5";
 const MAX_TOKENS = 4000;
@@ -268,14 +273,6 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Flux SSE vers le navigateur.
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream; charset=utf-8",
-    "Cache-Control": "no-cache, no-transform",
-    Connection: "keep-alive",
-    "X-Accel-Buffering": "no",
-  });
-
   const send = (payload) => {
     res.write(`data: ${JSON.stringify(payload)}\n\n`);
   };
@@ -301,40 +298,93 @@ export default async function handler(req, res) {
     }
   };
 
-  const client = new Anthropic();
   let answer = "";
 
   try {
-    const stream = client.messages.stream({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      output_config: { effort: "low" },
-      system: [
-        {
-          type: "text",
-          text: SYSTEM_PROMPT,
-          cache_control: { type: "ephemeral" },
-        },
-        // Bloc volatil, place APRES le point de cache pour ne pas l'invalider.
-        {
-          type: "text",
-          text: `Langue du visiteur: ${lang}. Reponds dans cette langue.`,
-        },
-      ],
-      messages,
+    const upstream = await fetch(ANTHROPIC_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": ANTHROPIC_VERSION,
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: MAX_TOKENS,
+        stream: true,
+        output_config: { effort: "low" },
+        system: [
+          {
+            type: "text",
+            text: SYSTEM_PROMPT,
+            cache_control: { type: "ephemeral" },
+          },
+          // Bloc volatil, place APRES le point de cache pour ne pas l'invalider.
+          {
+            type: "text",
+            text: `Langue du visiteur: ${lang}. Reponds dans cette langue.`,
+          },
+        ],
+        messages,
+      }),
     });
 
-    for await (const event of stream) {
-      if (
-        event.type === "content_block_delta" &&
-        event.delta.type === "text_delta"
-      ) {
-        answer += event.delta.text;
-        pushText(event.delta.text);
-      }
+    // Tant que rien n'est ecrit, on peut encore renvoyer une vraie erreur HTTP.
+    if (!upstream.ok || !upstream.body) {
+      const detail = await upstream.text().catch(() => "");
+      console.error("Erreur API Anthropic", upstream.status, detail.slice(0, 500));
+      res.status(502).json({ error: statusToCode(upstream.status) });
+      return;
     }
 
-    const final = await stream.finalMessage();
+    // A partir d'ici, flux SSE vers le navigateur.
+    res.writeHead(200, {
+      "Content-Type": "text/event-stream; charset=utf-8",
+      "Cache-Control": "no-cache, no-transform",
+      Connection: "keep-alive",
+      "X-Accel-Buffering": "no",
+    });
+
+    const reader = upstream.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = "";
+    let stopReason = null;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+
+      // Les evenements SSE sont separes par une ligne vide.
+      const blocks = buffer.split("\n\n");
+      buffer = blocks.pop();
+
+      for (const block of blocks) {
+        for (const line of block.split("\n")) {
+          if (!line.startsWith("data:")) continue;
+
+          const raw = line.slice(5).trim();
+          if (!raw) continue;
+
+          let evt;
+          try {
+            evt = JSON.parse(raw);
+          } catch {
+            continue;
+          }
+
+          if (evt.type === "content_block_delta" && evt.delta?.type === "text_delta") {
+            answer += evt.delta.text;
+            pushText(evt.delta.text);
+          } else if (evt.type === "message_delta" && evt.delta?.stop_reason) {
+            stopReason = evt.delta.stop_reason;
+          } else if (evt.type === "error") {
+            throw new Error(evt.error?.message || "stream_error");
+          }
+        }
+      }
+    }
 
     // Vide la queue retenue par le filtre de marqueur.
     if (pending.length > 0) {
@@ -342,7 +392,7 @@ export default async function handler(req, res) {
       pending = "";
     }
 
-    if (final.stop_reason === "refusal") {
+    if (stopReason === "refusal") {
       send({ t: "refusal" });
     }
 
@@ -360,20 +410,22 @@ export default async function handler(req, res) {
   } catch (err) {
     console.error("Erreur API Anthropic:", err);
 
-    let code = "api_error";
-    if (err instanceof Anthropic.RateLimitError) code = "rate_limited";
-    else if (err instanceof Anthropic.AuthenticationError) code = "auth_error";
-    else if (err instanceof Anthropic.BadRequestError) code = "bad_request";
-    else if (err instanceof Anthropic.APIConnectionError) code = "connection_error";
-
     if (!res.headersSent) {
-      res.status(500).json({ error: code });
+      res.status(500).json({ error: "api_error" });
       return;
     }
 
-    send({ t: "error", v: code });
+    send({ t: "error", v: "api_error" });
     res.end();
   }
+}
+
+// Traduit un code HTTP de l'API en code court pour le navigateur.
+function statusToCode(status) {
+  if (status === 401 || status === 403) return "auth_error";
+  if (status === 429) return "rate_limited";
+  if (status === 400) return "bad_request";
+  return "api_error";
 }
 
 function safeParse(text) {
