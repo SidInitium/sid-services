@@ -225,6 +225,8 @@
     if (ctaBtn) ctaBtn.href = telegramLinks[lang];
     document.documentElement.lang = lang;
     sessionStorage.setItem('selected_lang', lang);
+    // Pousse la langue vers le shell (widget de chat).
+    try { parent.postMessage({ type: 'lang_state', lang: lang }, '*'); } catch (e) {}
   }
   setLang(sessionStorage.getItem('selected_lang') || 'fr');
 

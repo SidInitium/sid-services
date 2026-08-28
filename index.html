@@ -17,16 +17,129 @@
   <link rel="icon" type="image/jpeg" href="logo.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { width: 100%; height: 100%; overflow: hidden; background: #050810; font-family: 'Inter', system-ui, -apple-system, sans-serif; }
     iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* ═══════════ WIDGET DE CHAT, DEBUT ═══════════
+       Pour retirer le widget: supprimer les trois blocs marques WIDGET DE CHAT
+       (ces regles CSS, le conteneur sid-chat, et le script en bas de page). */
+
+    #sid-chat { --green: #00FFB4; --purple: #7B61FF; --panel: rgba(5,8,16,0.96); --line: rgba(0,255,180,0.18); }
+
+    #sid-launcher {
+      position: fixed; bottom: 22px; right: 22px; z-index: 900;
+      display: flex; align-items: center; gap: 8px;
+      font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 2px;
+      padding: 11px 16px; border: 1px solid var(--line); border-radius: 4px;
+      background: var(--panel); color: var(--green); cursor: pointer;
+      backdrop-filter: blur(6px); transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+    }
+    #sid-launcher:hover { border-color: rgba(0,255,180,0.5); box-shadow: 0 0 16px rgba(0,255,180,0.15); transform: translateY(-1px); }
+    #sid-launcher.hidden { display: none; }
+    #sid-launcher .pulse { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: sid-pulse 2.4s ease-in-out infinite; }
+    @keyframes sid-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; box-shadow: 0 0 8px var(--green); } }
+
+    #sid-panel {
+      position: fixed; bottom: 22px; right: 22px; z-index: 901;
+      width: 370px; max-width: calc(100vw - 32px); height: 540px; max-height: calc(100vh - 44px);
+      display: none; flex-direction: column;
+      background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+      backdrop-filter: blur(10px); box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+      overflow: hidden;
+    }
+    #sid-panel.open { display: flex; }
+
+    #sid-head {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px; border-bottom: 1px solid rgba(224,232,255,0.08);
+      font-family: 'Share Tech Mono', monospace; font-size: 12px; letter-spacing: 2px;
+      color: var(--green); background: rgba(123,97,255,0.05);
+    }
+    #sid-close { background: none; border: none; color: rgba(224,232,255,0.6); font-size: 18px; line-height: 1; cursor: pointer; padding: 0 2px; font-family: 'Share Tech Mono', monospace; }
+    #sid-close:hover { color: var(--green); }
+
+    #sid-log { flex: 1; overflow-y: auto; padding: 16px 14px; display: flex; flex-direction: column; gap: 12px; }
+    #sid-log::-webkit-scrollbar { width: 6px; }
+    #sid-log::-webkit-scrollbar-thumb { background: rgba(0,255,180,0.18); border-radius: 3px; }
+
+    .sid-msg { font-size: 14px; line-height: 1.65; max-width: 88%; padding: 9px 12px; border-radius: 4px; white-space: pre-wrap; word-wrap: break-word; }
+    .sid-msg.bot { align-self: flex-start; background: rgba(224,232,255,0.05); border-left: 2px solid var(--purple); color: rgba(224,232,255,0.92); }
+    .sid-msg.me { align-self: flex-end; background: rgba(0,255,180,0.08); border-right: 2px solid var(--green); color: rgba(224,232,255,0.95); }
+    .sid-msg.err { align-self: flex-start; background: rgba(255,90,90,0.08); border-left: 2px solid rgba(255,120,120,0.6); color: rgba(255,190,190,0.95); font-size: 13px; }
+
+    .sid-dots { align-self: flex-start; font-family: 'Share Tech Mono', monospace; color: var(--purple); font-size: 15px; letter-spacing: 3px; padding: 4px 12px; }
+    .sid-dots span { animation: sid-blink 1.4s infinite; }
+    .sid-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .sid-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes sid-blink { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
+
+    #sid-foot { border-top: 1px solid rgba(224,232,255,0.08); padding: 10px 12px 12px; }
+    #sid-form { display: flex; gap: 8px; align-items: flex-end; }
+    #sid-input {
+      flex: 1; resize: none; min-height: 38px; max-height: 110px;
+      background: rgba(224,232,255,0.04); border: 1px solid rgba(224,232,255,0.1); border-radius: 4px;
+      color: rgba(224,232,255,0.95); font-family: 'Inter', system-ui, sans-serif; font-size: 14px;
+      padding: 9px 10px; line-height: 1.45; outline: none; transition: border-color 0.2s;
+    }
+    #sid-input:focus { border-color: rgba(0,255,180,0.4); }
+    #sid-input::placeholder { color: rgba(224,232,255,0.4); }
+    #sid-send {
+      font-family: 'Share Tech Mono', monospace; font-size: 13px; letter-spacing: 1px;
+      padding: 10px 13px; border: 1px solid var(--line); border-radius: 4px;
+      background: rgba(0,255,180,0.06); color: var(--green); cursor: pointer; transition: all 0.2s;
+    }
+    #sid-send:hover:not(:disabled) { border-color: rgba(0,255,180,0.5); background: rgba(0,255,180,0.12); }
+    #sid-send:disabled { opacity: 0.4; cursor: default; }
+
+    #sid-cta {
+      display: block; margin-top: 9px; text-align: center; text-decoration: none;
+      font-family: 'Share Tech Mono', monospace; font-size: 11px; letter-spacing: 1.5px;
+      color: rgba(224,232,255,0.75); padding: 7px; border: 1px solid rgba(224,232,255,0.09); border-radius: 4px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    #sid-cta:hover { color: var(--green); border-color: rgba(0,255,180,0.35); }
+    #sid-privacy { margin-top: 8px; text-align: center; font-family: 'Share Tech Mono', monospace; font-size: 9px; letter-spacing: 0.5px; color: rgba(224,232,255,0.35); line-height: 1.5; }
+
+    @media (max-width: 480px) {
+      #sid-panel { bottom: 12px; right: 12px; left: 12px; width: auto; height: 78vh; }
+      #sid-launcher { bottom: 14px; right: 14px; padding: 10px 14px; font-size: 12px; }
+    }
+    /* ═══════════ WIDGET DE CHAT, FIN ═══════════ */
   </style>
 </head>
 <body>
   <audio id="bg-music" src="bjorns-anvil.mp3" loop preload="none"></audio>
   <iframe id="main-frame" name="main" src="home.html"></iframe>
+
+  <!-- ═══════════ WIDGET DE CHAT, DEBUT ═══════════ -->
+  <div id="sid-chat">
+    <button id="sid-launcher" type="button" aria-haspopup="dialog">
+      <span class="pulse"></span><span id="sid-launcher-label">PARLER À SID</span>
+    </button>
+
+    <div id="sid-panel" role="dialog" aria-modal="false" aria-labelledby="sid-title">
+      <div id="sid-head">
+        <span id="sid-title">// SID.ASSIST</span>
+        <button id="sid-close" type="button" aria-label="Fermer">✕</button>
+      </div>
+
+      <div id="sid-log" aria-live="polite"></div>
+
+      <div id="sid-foot">
+        <form id="sid-form">
+          <textarea id="sid-input" rows="1" maxlength="1500" autocomplete="off"></textarea>
+          <button id="sid-send" type="submit">▶</button>
+        </form>
+        <a id="sid-cta" href="https://t.me/+3UVjmhChuvdlM2I9" target="_blank" rel="noopener noreferrer"></a>
+        <div id="sid-privacy"></div>
+      </div>
+    </div>
+  </div>
+  <!-- ═══════════ WIDGET DE CHAT, FIN ═══════════ -->
+
   <script>
     var audio = document.getElementById('bg-music');
     var frame = document.getElementById('main-frame');
@@ -49,5 +162,259 @@
       try { frame.contentWindow.postMessage({ type: 'music_state', playing: playing }, '*'); } catch(e) {}
     }
   </script>
+
+  <!-- ═══════════ WIDGET DE CHAT, DEBUT ═══════════ -->
+  <script>
+  (function() {
+    var TG = {
+      fr: 'https://t.me/+3UVjmhChuvdlM2I9',
+      en: 'https://t.me/+0sEmgCSYT4U5N2Rl',
+      ru: 'https://t.me/+JMbQqHOF2ilkN2Q9'
+    };
+
+    var T = {
+      fr: {
+        launcher: 'PARLER À SID',
+        title: '// SID.ASSIST',
+        hello: 'Salut. Dis-moi ce que tu cherches, je t\'oriente vers le bon service en deux minutes.',
+        placeholder: 'Ton besoin en une phrase...',
+        cta: '→ CONTINUER SUR TELEGRAM',
+        privacy: 'Assistant IA. Tes messages sont traites par l\'API Anthropic pour generer la reponse. Rien n\'est stocke sur le site.',
+        err_net: 'Connexion perdue. Reessaie dans un instant, ou passe directement par Telegram.',
+        err_rate: 'Trop de messages d\'un coup. Attends une minute, ou passe par Telegram.',
+        err_api: 'Le service est momentanement indisponible. Passe par Telegram, SID repond directement.',
+        err_long: 'La conversation est trop longue. Recharge la page, ou continue sur Telegram.',
+        refusal: 'Je prefere ne pas repondre a ca. Reformule, ou parles-en directement a SID sur Telegram.'
+      },
+      en: {
+        launcher: 'TALK TO SID',
+        title: '// SID.ASSIST',
+        hello: 'Hey. Tell me what you are looking for, I will point you to the right service in two minutes.',
+        placeholder: 'Your need in one sentence...',
+        cta: '→ CONTINUE ON TELEGRAM',
+        privacy: 'AI assistant. Your messages are processed by the Anthropic API to generate the reply. Nothing is stored on the site.',
+        err_net: 'Connection lost. Try again shortly, or go straight to Telegram.',
+        err_rate: 'Too many messages at once. Wait a minute, or go to Telegram.',
+        err_api: 'The service is temporarily unavailable. Go to Telegram, SID answers directly.',
+        err_long: 'This conversation got too long. Reload the page, or continue on Telegram.',
+        refusal: 'I would rather not answer that. Rephrase it, or ask SID directly on Telegram.'
+      },
+      ru: {
+        launcher: 'НАПИСАТЬ SID',
+        title: '// SID.ASSIST',
+        hello: 'Привет. Скажи, что тебе нужно, и я за пару минут направлю тебя к нужной услуге.',
+        placeholder: 'Твой запрос одним предложением...',
+        cta: '→ ПРОДОЛЖИТЬ В TELEGRAM',
+        privacy: 'ИИ-ассистент. Твои сообщения обрабатываются через API Anthropic для генерации ответа. На сайте ничего не хранится.',
+        err_net: 'Соединение потеряно. Попробуй ещё раз или напиши напрямую в Telegram.',
+        err_rate: 'Слишком много сообщений сразу. Подожди минуту или пиши в Telegram.',
+        err_api: 'Сервис временно недоступен. Пиши в Telegram, SID отвечает лично.',
+        err_long: 'Разговор стал слишком длинным. Обнови страницу или продолжи в Telegram.',
+        refusal: 'Лучше не буду на это отвечать. Переформулируй или спроси SID напрямую в Telegram.'
+      }
+    };
+
+    var launcher = document.getElementById('sid-launcher');
+    var launcherLabel = document.getElementById('sid-launcher-label');
+    var panel = document.getElementById('sid-panel');
+    var closeBtn = document.getElementById('sid-close');
+    var log = document.getElementById('sid-log');
+    var form = document.getElementById('sid-form');
+    var input = document.getElementById('sid-input');
+    var sendBtn = document.getElementById('sid-send');
+    var cta = document.getElementById('sid-cta');
+    var privacy = document.getElementById('sid-privacy');
+    var titleEl = document.getElementById('sid-title');
+
+    var history = [];
+    var busy = false;
+    var lang = 'fr';
+    var greetingEl = null;
+
+    function readLang() {
+      try {
+        var stored = sessionStorage.getItem('selected_lang');
+        if (stored === 'en' || stored === 'ru' || stored === 'fr') return stored;
+      } catch (e) {}
+      return 'fr';
+    }
+
+    function applyLang(next) {
+      if (next !== 'fr' && next !== 'en' && next !== 'ru') return;
+      lang = next;
+      var t = T[lang];
+      launcherLabel.textContent = t.launcher;
+      titleEl.textContent = t.title;
+      input.placeholder = t.placeholder;
+      cta.textContent = t.cta;
+      cta.href = TG[lang];
+      privacy.textContent = t.privacy;
+      // Le message d'accueil suit la langue tant que rien n'a ete envoye.
+      if (greetingEl && history.length === 0) greetingEl.textContent = t.hello;
+    }
+
+    function addMsg(kind, text) {
+      var el = document.createElement('div');
+      el.className = 'sid-msg ' + kind;
+      el.textContent = text;
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+      return el;
+    }
+
+    function addDots() {
+      var el = document.createElement('div');
+      el.className = 'sid-dots';
+      el.innerHTML = '<span>·</span><span>·</span><span>·</span>';
+      log.appendChild(el);
+      log.scrollTop = log.scrollHeight;
+      return el;
+    }
+
+    function openPanel() {
+      panel.classList.add('open');
+      launcher.classList.add('hidden');
+      if (!greetingEl) greetingEl = addMsg('bot', T[lang].hello);
+      setTimeout(function() { input.focus(); }, 60);
+    }
+
+    function closePanel() {
+      panel.classList.remove('open');
+      launcher.classList.remove('hidden');
+    }
+
+    launcher.addEventListener('click', openPanel);
+    closeBtn.addEventListener('click', closePanel);
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && panel.classList.contains('open')) closePanel();
+    });
+
+    input.addEventListener('input', function() {
+      input.style.height = 'auto';
+      input.style.height = Math.min(input.scrollHeight, 110) + 'px';
+    });
+
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        form.requestSubmit();
+      }
+    });
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      if (busy) return;
+
+      var text = input.value.trim();
+      if (!text) return;
+
+      input.value = '';
+      input.style.height = 'auto';
+      addMsg('me', text);
+      history.push({ role: 'user', content: text });
+      send();
+    });
+
+    function errorText(code) {
+      var t = T[lang];
+      if (code === 'rate_limited') return t.err_rate;
+      if (code === 'conversation_too_long') return t.err_long;
+      if (code === 'network') return t.err_net;
+      return t.err_api;
+    }
+
+    function send() {
+      busy = true;
+      sendBtn.disabled = true;
+      var dots = addDots();
+      var bubble = null;
+      var answer = '';
+
+      var fail = function(code) {
+        if (dots && dots.parentNode) dots.remove();
+        if (bubble && answer.length === 0) bubble.remove();
+        addMsg('err', errorText(code));
+        // Le tour rate est retire pour ne pas polluer l'historique envoye ensuite.
+        if (history.length && history[history.length - 1].role === 'user') history.pop();
+        busy = false;
+        sendBtn.disabled = false;
+      };
+
+      fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ messages: history, lang: lang })
+      }).then(function(res) {
+        if (!res.ok || !res.body) {
+          return res.json().catch(function() { return {}; }).then(function(data) {
+            throw new Error(data.error || 'api_error');
+          });
+        }
+
+        var reader = res.body.getReader();
+        var decoder = new TextDecoder();
+        var buffer = '';
+
+        function pump() {
+          return reader.read().then(function(result) {
+            if (result.done) return;
+            buffer += decoder.decode(result.value, { stream: true });
+
+            var parts = buffer.split('\n\n');
+            buffer = parts.pop();
+
+            parts.forEach(function(part) {
+              var line = part.trim();
+              if (line.indexOf('data: ') !== 0) return;
+
+              var payload;
+              try { payload = JSON.parse(line.slice(6)); } catch (err) { return; }
+
+              if (payload.t === 'delta') {
+                if (dots.parentNode) dots.remove();
+                if (!bubble) bubble = addMsg('bot', '');
+                answer += payload.v;
+                bubble.textContent = answer;
+                log.scrollTop = log.scrollHeight;
+              } else if (payload.t === 'refusal') {
+                if (!bubble) bubble = addMsg('bot', '');
+                if (answer.length === 0) { answer = T[lang].refusal; bubble.textContent = answer; }
+              } else if (payload.t === 'error') {
+                throw new Error(payload.v || 'api_error');
+              }
+            });
+
+            return pump();
+          });
+        }
+
+        return pump().then(function() {
+          if (dots.parentNode) dots.remove();
+          if (answer.trim().length > 0) {
+            history.push({ role: 'assistant', content: answer });
+            busy = false;
+            sendBtn.disabled = false;
+          } else {
+            fail('api_error');
+          }
+        });
+      }).catch(function(err) {
+        var code = err && err.message ? err.message : 'network';
+        if (code === 'Failed to fetch' || code === 'network') code = 'network';
+        fail(code);
+      });
+    }
+
+    // La langue vit dans les pages chargees dans l'iframe. On la recupere au
+    // chargement, et les pages la poussent ici quand le visiteur en change.
+    window.addEventListener('message', function(e) {
+      if (e.data && e.data.type === 'lang_state') applyLang(e.data.lang);
+    });
+    frame.addEventListener('load', function() { applyLang(readLang()); });
+
+    applyLang(readLang());
+  })();
+  </script>
+  <!-- ═══════════ WIDGET DE CHAT, FIN ═══════════ -->
 </body>
 </html>
