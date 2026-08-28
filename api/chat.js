@@ -138,16 +138,31 @@ function clientIp(req) {
   return req.socket?.remoteAddress || "unknown";
 }
 
+// Les URL vercel.app du projet sont ajoutees automatiquement, sinon un test
+// depuis l'adresse de deploiement Vercel serait bloque a tort.
+function allowedOrigins() {
+  const list = [...ALLOWED_ORIGINS];
+  for (const host of [
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+    process.env.VERCEL_URL,
+  ]) {
+    if (host) list.push(`https://${host}`);
+  }
+  return list;
+}
+
 function originAllowed(req) {
   // En preview ou en local, on laisse passer pour pouvoir tester.
   if (process.env.VERCEL_ENV !== "production") return true;
 
+  const list = allowedOrigins();
+
   const origin = req.headers.origin;
-  if (typeof origin === "string" && ALLOWED_ORIGINS.includes(origin)) return true;
+  if (typeof origin === "string" && list.includes(origin)) return true;
 
   const referer = req.headers.referer;
   if (typeof referer === "string") {
-    return ALLOWED_ORIGINS.some((allowed) => referer.startsWith(allowed + "/"));
+    return list.some((allowed) => referer.startsWith(allowed + "/"));
   }
 
   return false;
@@ -332,12 +347,16 @@ export default async function handler(req, res) {
     }
 
     send({ t: "done" });
-    res.end();
 
+    // La notification part AVANT de fermer la reponse. Sur une fonction
+    // serverless, tout ce qui suit res.end() peut ne jamais s'executer, la
+    // machine est gelee des que la reponse est close.
     if (leadDetected) {
       const cleanAnswer = answer.split(LEAD_MARKER).join("").trim();
       await notifyLead([...messages, { role: "assistant", content: cleanAnswer }], lang);
     }
+
+    res.end();
   } catch (err) {
     console.error("Erreur API Anthropic:", err);
 
