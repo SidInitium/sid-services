@@ -390,7 +390,12 @@
 
         return pump().then(function() {
           if (dots.parentNode) dots.remove();
-          if (answer.trim().length > 0) {
+          // Retire les sauts de ligne de fin, laisses notamment par le retrait
+          // du marqueur de qualification, qui ajoutaient une ligne vide en bas
+          // de la derniere bulle.
+          answer = answer.trim();
+          if (bubble) bubble.textContent = answer;
+          if (answer.length > 0) {
             history.push({ role: 'assistant', content: answer });
             busy = false;
             sendBtn.disabled = false;
