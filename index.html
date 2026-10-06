@@ -231,6 +231,20 @@
     var lang = 'fr';
     var greetingEl = null;
 
+    // Identifiant de visite, fabrique dans le navigateur et garde le temps de
+    // l'onglet. Il permet de regrouper les echanges d'un meme passage dans
+    // l'archive Telegram, sans que le serveur ait quoi que ce soit a stocker.
+    // Prefixe par une lettre pour rester un hashtag Telegram cliquable.
+    var convId = (function() {
+      try {
+        var kept = sessionStorage.getItem('sid_conv_id');
+        if (kept) return kept;
+      } catch (e) {}
+      var fresh = 'C' + Math.random().toString(36).slice(2, 6).toUpperCase();
+      try { sessionStorage.setItem('sid_conv_id', fresh); } catch (e) {}
+      return fresh;
+    })();
+
     function readLang() {
       try {
         var stored = sessionStorage.getItem('selected_lang');
@@ -343,7 +357,7 @@
       fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: history, lang: lang })
+        body: JSON.stringify({ messages: history, lang: lang, conv: convId })
       }).then(function(res) {
         if (!res.ok || !res.body) {
           return res.json().catch(function() { return {}; }).then(function(data) {
