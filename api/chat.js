@@ -23,6 +23,12 @@ const MAX_TOTAL_CHARS = 12000;
 const RATE_LIMIT_MAX = 12; // requetes
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // par minute et par IP
 
+// Alerte Telegram quand l'API Anthropic refuse de repondre. Un seul message par
+// type d'erreur et par fenetre, sinon une cle morte declencherait une notif par
+// message de chaque visiteur.
+const ALERT_COOLDOWN_MS = 30 * 60 * 1000;
+const TELEGRAM_TIMEOUT_MS = 5000;
+
 const ALLOWED_ORIGINS = [
   "https://sid.services",
   "https://www.sid.services",
@@ -135,6 +141,20 @@ function rateLimited(ip) {
 // Utilitaires
 // ---------------------------------------------------------------------------
 
+// Memoire du dernier envoi par code d'erreur. Comme le rate limit, c'est en
+// memoire et par instance serverless: plusieurs instances actives peuvent donc
+// envoyer plusieurs alertes pour la meme panne. Ca reduit le flot, ca ne le
+// supprime pas, et c'est suffisant ici.
+const alerts = new Map();
+
+function alertThrottled(code) {
+  const now = Date.now();
+  const previous = alerts.get(code);
+  if (previous !== undefined && now - previous < ALERT_COOLDOWN_MS) return true;
+  alerts.set(code, now);
+  return false;
+}
+
 function clientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
   if (typeof forwarded === "string" && forwarded.length > 0) {
@@ -207,31 +227,71 @@ function normalizeLang(value) {
   return value === "en" || value === "ru" ? value : "fr";
 }
 
-// Envoie le resume d'une conversation qualifiee sur Telegram.
-// Silencieux si les variables d'environnement ne sont pas configurees.
-async function notifyLead(messages, lang) {
+// Envoi brut vers Telegram, partage par les deux types de notification.
+// Silencieux si les variables d'environnement ne sont pas configurees, et
+// jamais bloquant: une notification ratee ne doit pas casser la conversation
+// du visiteur.
+async function sendTelegram(text) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) return;
-
-  const transcript = messages
-    .slice(-8)
-    .map((m) => `${m.role === "user" ? "Visiteur" : "Bot"}: ${m.content}`)
-    .join("\n\n")
-    .slice(0, 3000);
-
-  const text = `🎯 Lead qualifie sur sid.services\nLangue: ${lang.toUpperCase()}\n\n${transcript}`;
 
   try {
     await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ chat_id: chatId, text, disable_web_page_preview: true }),
+      // L'envoi est attendu avant la fermeture de la reponse, donc on le
+      // plafonne: si Telegram ne repond pas, le visiteur n'attend pas.
+      signal: AbortSignal.timeout(TELEGRAM_TIMEOUT_MS),
     });
   } catch (err) {
-    // Une notification ratee ne doit jamais casser la conversation du visiteur.
     console.error("Notification Telegram echouee:", err);
   }
+}
+
+// Envoie le resume d'une conversation qualifiee sur Telegram.
+async function notifyLead(messages, lang) {
+  const transcript = messages
+    .slice(-8)
+    .map((m) => `${m.role === "user" ? "Visiteur" : "Bot"}: ${m.content}`)
+    .join("\n\n")
+    .slice(0, 3000);
+
+  await sendTelegram(
+    `🎯 Lead qualifie sur sid.services\nLangue: ${lang.toUpperCase()}\n\n${transcript}`
+  );
+}
+
+// Ce qu'il faut aller verifier, par code d'erreur.
+const ERROR_ADVICE = {
+  auth_error:
+    "Cle API refusee. Revoquee, supprimee, ou plafond de depense atteint. Verifier console.anthropic.com, puis ANTHROPIC_API_KEY sur Vercel, et redeployer apres le changement.",
+  bad_request:
+    "Requete refusee par l'API. Cause la plus frequente: credit epuise sur le compte Anthropic.",
+  rate_limited:
+    "Limite de debit atteinte chez Anthropic. Generalement passager, rien a faire.",
+  api_error:
+    "Erreur cote Anthropic, ou plantage de la fonction. Souvent passager. Voir les logs Vercel si ca dure.",
+};
+
+// Alerte quand le chat tombe. Le cas qui compte: cle morte ou credit epuise,
+// qui coupe le widget pour tous les visiteurs sans que personne ne le voie.
+// Aucun contenu de conversation n'est envoye ici, seulement l'erreur technique.
+async function notifyError(code, status, detail) {
+  if (alertThrottled(code)) return;
+
+  const when = new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
+  const advice = ERROR_ADVICE[code] || "Voir les logs de la fonction sur Vercel.";
+  const trimmed = (detail || "").trim().slice(0, 500);
+
+  await sendTelegram(
+    `🔴 Chat sid.services en panne\n` +
+      `Code: ${code}${status ? ` (HTTP ${status})` : ""}\n` +
+      `Heure (Paris): ${when}\n\n` +
+      `${advice}` +
+      (trimmed ? `\n\nReponse de l'API:\n${trimmed}` : "")
+  );
 }
 
 // ---------------------------------------------------------------------------
@@ -333,7 +393,11 @@ export default async function handler(req, res) {
     if (!upstream.ok || !upstream.body) {
       const detail = await upstream.text().catch(() => "");
       console.error("Erreur API Anthropic", upstream.status, detail.slice(0, 500));
-      res.status(502).json({ error: statusToCode(upstream.status) });
+      // L'alerte part AVANT la reponse: des que res.json() ferme la reponse,
+      // la fonction peut etre gelee et le fetch vers Telegram jamais aboutir.
+      const code = statusToCode(upstream.status);
+      await notifyError(code, upstream.status, detail);
+      res.status(502).json({ error: code });
       return;
     }
 
@@ -409,6 +473,8 @@ export default async function handler(req, res) {
     res.end();
   } catch (err) {
     console.error("Erreur API Anthropic:", err);
+
+    await notifyError("api_error", null, err && err.message ? err.message : String(err));
 
     if (!res.headersSent) {
       res.status(500).json({ error: "api_error" });
