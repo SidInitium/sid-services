@@ -10,6 +10,8 @@
 // Reglages
 // ---------------------------------------------------------------------------
 
+import { createHash } from "node:crypto";
+
 const ANTHROPIC_URL = "https://api.anthropic.com/v1/messages";
 const ANTHROPIC_VERSION = "2023-06-01";
 
@@ -26,6 +28,19 @@ const RATE_LIMIT_WINDOW_MS = 60 * 1000; // par minute et par IP
 // Alerte Telegram quand l'API Anthropic refuse de repondre. Un seul message par
 // type d'erreur et par fenetre, sinon une cle morte declencherait une notif par
 // message de chaque visiteur.
+// Archive des conversations. Il n'y a pas de base de donnees: le fil
+// Telegram EST l'archive, et le #id du visiteur sert de clef de recherche.
+// En dessous de ce nombre d'echanges, on n'archive pas: ca filtre le visiteur
+// qui ouvre le widget, tape un mot et repart, et les scrapers.
+const ARCHIVE_MIN_TURNS = 2;
+
+// Sel de hachage des IP. On ne stocke jamais une IP, on en derive un #id
+// stable. Le sel doit rester secret, sinon l'espace IPv4 se brute-force en
+// quelques minutes et le #id redevient une IP. Par ordre de preference:
+// VISITOR_ID_SECRET si SID l'a defini, sinon le token du bot, qui est deja
+// secret et deja configure. Changer de sel renumerote tous les visiteurs.
+const VISITOR_ID_FALLBACK_SALT = "sid.services/visitor-id/v1";
+
 const ALERT_COOLDOWN_MS = 30 * 60 * 1000;
 const TELEGRAM_TIMEOUT_MS = 5000;
 
@@ -155,6 +170,34 @@ function alertThrottled(code) {
   return false;
 }
 
+// #id pseudonyme et stable d'un visiteur. Prefixe par une lettre pour que
+// Telegram le reconnaisse toujours comme un hashtag cliquable, ce qui n'est
+// pas garanti pour une suite uniquement numerique.
+function visitorId(req) {
+  const salt =
+    process.env.VISITOR_ID_SECRET ||
+    process.env.TELEGRAM_BOT_TOKEN ||
+    VISITOR_ID_FALLBACK_SALT;
+
+  const digest = createHash("sha256")
+    .update(clientIp(req) + "|" + salt)
+    .digest("hex");
+
+  return "V" + digest.slice(0, 5).toUpperCase();
+}
+
+// Id de visite fabrique par le navigateur. On ne fait que le nettoyer: il
+// vient du client, donc il n'est pas digne de confiance.
+function normalizeConvId(value) {
+  if (typeof value !== "string") return "";
+  const clean = value.replace(/[^A-Za-z0-9]/g, "").slice(0, 8).toUpperCase();
+  return clean.length > 0 ? clean : "";
+}
+
+function parisTime() {
+  return new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
+}
+
 function clientIp(req) {
   const forwarded = req.headers["x-forwarded-for"];
   if (typeof forwarded === "string" && forwarded.length > 0) {
@@ -250,8 +293,18 @@ async function sendTelegram(text) {
   }
 }
 
+// Ligne d'en-tete commune aux notifications liees a un visiteur. Les #tags sont
+// la pour la recherche Telegram: tout arrive dans la meme conversation, donc
+// #lead, #conv et #panne sont le seul moyen de filtrer.
+function visitorHeader(tag, vid, conv, lang) {
+  return (
+    `${tag} #${vid}${conv ? ` #${conv}` : ""}` +
+    `\n${lang.toUpperCase()} · ${parisTime()}`
+  );
+}
+
 // Envoie le resume d'une conversation qualifiee sur Telegram.
-async function notifyLead(messages, lang) {
+async function notifyLead(messages, lang, vid, conv) {
   const transcript = messages
     .slice(-8)
     .map((m) => `${m.role === "user" ? "Visiteur" : "Bot"}: ${m.content}`)
@@ -259,7 +312,30 @@ async function notifyLead(messages, lang) {
     .slice(0, 3000);
 
   await sendTelegram(
-    `🎯 Lead qualifie sur sid.services\nLangue: ${lang.toUpperCase()}\n\n${transcript}`
+    `🎯 Lead qualifie sur sid.services\n` +
+      visitorHeader("#lead", vid, conv, lang) +
+      `\n\n${transcript}`
+  );
+}
+
+// Archive un echange dans Telegram. Au 2e echange on envoie la conversation
+// complete, sinon la question d'ouverture, la plus parlante, serait perdue.
+// Ensuite, un seul echange par message, pour ne pas reposter tout le fil.
+async function notifyArchive(messages, answer, lang, vid, conv, userTurns) {
+  const complete = userTurns === ARCHIVE_MIN_TURNS;
+
+  const lastUser = messages.map((m) => m.role).lastIndexOf("user");
+  const base = complete ? messages : messages.slice(lastUser >= 0 ? lastUser : -1);
+
+  const transcript = [...base, { role: "assistant", content: answer }]
+    .map((m) => `${m.role === "user" ? "Visiteur" : "Bot"}: ${m.content}`)
+    .join("\n\n")
+    .slice(0, 3200);
+
+  await sendTelegram(
+    `💬 ${complete ? "Conversation" : `Echange ${userTurns}`}\n` +
+      visitorHeader("#conv", vid, conv, lang) +
+      `\n\n${transcript}`
   );
 }
 
@@ -281,12 +357,12 @@ const ERROR_ADVICE = {
 async function notifyError(code, status, detail) {
   if (alertThrottled(code)) return;
 
-  const when = new Date().toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
+  const when = parisTime();
   const advice = ERROR_ADVICE[code] || "Voir les logs de la fonction sur Vercel.";
   const trimmed = (detail || "").trim().slice(0, 500);
 
   await sendTelegram(
-    `🔴 Chat sid.services en panne\n` +
+    `🔴 Chat sid.services en panne #panne\n` +
       `Code: ${code}${status ? ` (HTTP ${status})` : ""}\n` +
       `Heure (Paris): ${when}\n\n` +
       `${advice}` +
@@ -322,6 +398,8 @@ export default async function handler(req, res) {
   const body = typeof req.body === "string" ? safeParse(req.body) : req.body;
   const messages = sanitizeMessages(body?.messages);
   const lang = normalizeLang(body?.lang);
+  const conv = normalizeConvId(body?.conv);
+  const vid = visitorId(req);
 
   if (messages.length === 0) {
     res.status(400).json({ error: "no_messages" });
@@ -465,9 +543,20 @@ export default async function handler(req, res) {
     // La notification part AVANT de fermer la reponse. Sur une fonction
     // serverless, tout ce qui suit res.end() peut ne jamais s'executer, la
     // machine est gelee des que la reponse est close.
+    const cleanAnswer = answer.split(LEAD_MARKER).join("").trim();
+    const userTurns = messages.filter((m) => m.role === "user").length;
+
+    // Un lead qualifie est deja un resume complet du fil, on n'archive donc pas
+    // le meme tour une seconde fois juste en dessous.
     if (leadDetected) {
-      const cleanAnswer = answer.split(LEAD_MARKER).join("").trim();
-      await notifyLead([...messages, { role: "assistant", content: cleanAnswer }], lang);
+      await notifyLead(
+        [...messages, { role: "assistant", content: cleanAnswer }],
+        lang,
+        vid,
+        conv
+      );
+    } else if (userTurns >= ARCHIVE_MIN_TURNS && cleanAnswer.length > 0) {
+      await notifyArchive(messages, cleanAnswer, lang, vid, conv, userTurns);
     }
 
     res.end();
