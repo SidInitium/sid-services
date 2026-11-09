@@ -80,7 +80,7 @@ Pole 1, Identite Telegram:
 - Emoji statut simple: 25 euros. Une icone unique affichee a cote du pseudo.
 - Emoji adaptatif: 50 euros. Un design, en statut ou en fond de profil, s'adapte au theme clair ou sombre.
 - Pack statut plus fond adaptatif: 70 euros. Deux designs.
-- Pack double full adaptatif: 90 euros. Deux designs adaptatifs sur les deux slots.
+- Pack double full adaptatif: 100 euros. Deux designs adaptatifs sur les deux slots.
 - Pack communaute: des 120 euros. Plusieurs emojis assortis pour toute une communaute.
 - Username NFT: sur demande, ca se discute sur Telegram.
 
@@ -99,7 +99,7 @@ Pole 4, Site web:
 - Nom de domaine: sur devis. Orientation gratuite, acquisition selon disponibilite.
 - Site vitrine one-page: des 450 euros.
 - Site multi-pages: sur devis.
-- Options: langue supplementaire plus 100 euros (anglais, espagnol, portugais, italien, allemand) ou plus 150 euros (russe, arabe, chinois, japonais, coreen). Musique originale libre de droits plus 150 euros. Animation logo ou video de 100 a 250 euros.
+- Options: langue supplementaire plus 100 euros (anglais, espagnol, portugais, italien, allemand) ou plus 150 euros (russe, arabe, chinois, japonais, coreen). Musique originale composee pour le client, exclusive, droits inclus, des 150 euros (une vraie composition sur mesure, pas un morceau de banque de sons). Animation logo ou video de 100 a 250 euros.
 - Maintenance: 30 euros par mois.
 
 Paiements acceptes: PayPal, Stars Telegram, Crypto (USDT, USDC, BTC, ETH, BNB, SOL, TON).
